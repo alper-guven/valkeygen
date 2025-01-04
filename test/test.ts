@@ -4,7 +4,7 @@ import {
 	createValkeyKey,
 	createValkeyKeyParam,
 	createValkeyKeysMap,
-	ValkeyKeysConfig,
+	ValkeygenConfig,
 } from '../src';
 import { IsReadonlyConfig } from '../src/types/valkeygen/key-config';
 
