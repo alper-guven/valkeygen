@@ -29,10 +29,10 @@ const findParamNamesInTemplateString = (templateString: string): string[] => {
 // Create a template string from a template array
 
 export function createValkeyKey<T extends string>(
-	redisKeyTemplateString: T,
+	valkeyKeyTemplateString: T,
 	params: getRequiredParamsFromTemplateString<T>
 ): string {
-	let newString = String(redisKeyTemplateString).toString();
+	let newString = String(valkeyKeyTemplateString).toString();
 
 	// Check if template string is empty
 	if (newString.length === 0) {

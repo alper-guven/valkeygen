@@ -113,7 +113,7 @@ export const createValkeyKeysMap = <
 			: ScopeToKeys<T>
 		: never
 >(
-	redisKeysConfig: T,
+	valkeyKeysConfig: T,
 	optionalDelimiter?: Delimiter
 ): ReturnValue => {
 	if (optionalDelimiter != null) {
@@ -122,11 +122,11 @@ export const createValkeyKeysMap = <
 
 	const delimiter = optionalDelimiter || ':';
 
-	validateValkeyKeyConfig(redisKeysConfig);
+	validateValkeyKeyConfig(valkeyKeysConfig);
 
 	const map: ValkeyKeyTemplatesMapScope = createTemplateScope(
 		null,
-		redisKeysConfig as unknown as ValkeygenConfigScope,
+		valkeyKeysConfig as unknown as ValkeygenConfigScope,
 		delimiter
 	);
 

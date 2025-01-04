@@ -94,7 +94,7 @@ Create a `Valkey Keys Config` object.
 > You should write `as const` at the end of the object for things to properly work.
 
 ```typescript
-const redisKeysConfig = {
+const valkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
 
 	appStatus: ['app-status'],
@@ -373,7 +373,7 @@ const exampleValkeyKeysConfig = {
 
 ```typescript
 createValkeyKeysMap(
-  redisKeysConfig: Record<string, any>,
+  valkeyKeysConfig: Record<string, any>,
   optionalDelimiter: string | null
 )
 ```
@@ -386,7 +386,7 @@ If you don't want to use a delimiter, give an empty string (`''`) to `optionalDe
 
 > For most cases (like 95% of them), you will use a delimiter. Therefore I chose the most commonly used one (colon `:`), which is also used in official Valkey tutorials, as the default delimiter.
 
-> `redisKeysConfig` should be given as the example below. Otherwise you won't get suggestions on `createValkeyKey()` and also Typescript will give an error when you try to provide parameter values.
+> `valkeyKeysConfig` should be given as the example below. Otherwise you won't get suggestions on `createValkeyKey()` and also Typescript will give an error when you try to provide parameter values.
 
 > `readonly ValkeyKeysConfig` does not work. Only way is to write `as const` at the end of the config object.
 
@@ -427,7 +427,7 @@ It will produce this object which is a `Valkey Keys Template Map`:
 
 ```typescript
 createValkeyKey(
-  redisKeyTemplateString: string,
+  valkeyKeyTemplateString: string,
   params: Record<string, string>
 ): string
 ```

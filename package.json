@@ -28,12 +28,12 @@
     "url": "https://github.com/alper-guven/valkeygen/issues"
   },
   "keywords": [
-    "redis",
-    "redis key",
-    "redis key generator",
-    "redis key creator",
-    "create redis key",
-    "create redis keys"
+    "valkey",
+    "valkey key",
+    "valkey key generator",
+    "valkey key creator",
+    "create valkey key",
+    "create valkey keys"
   ],
   "homepage": "https://github.com/alper-guven/valkeygen#readme",
   "devDependencies": {

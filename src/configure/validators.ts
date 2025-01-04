@@ -120,9 +120,9 @@ export const validateScope = (
 	}
 };
 
-export const validateValkeyKeyConfig = (redisKeyConfig: unknown): void => {
+export const validateValkeyKeyConfig = (valkeyKeyConfig: unknown): void => {
 	try {
-		validateScope(redisKeyConfig, null);
+		validateScope(valkeyKeyConfig, null);
 	} catch (error) {
 		let message = 'unknown error';
 

@@ -8,7 +8,7 @@ import {
 } from '../src';
 import { IsReadonlyConfig } from '../src/types/valkeygen/key-config';
 
-const redisKeysConfig = {
+const valkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
 
 	appStatus: ['app-status'],
@@ -100,18 +100,18 @@ describe('Create Valkey Key', function () {
 			assert.equal(createValkeyKey('test', null), 'test');
 		});
 
-		it('should return my:redis:key:1234', function () {
+		it('should return my:valkey:key:1234', function () {
 			assert.equal(
-				createValkeyKey('my:redis:key:%KeyID%', {
+				createValkeyKey('my:valkey:key:%KeyID%', {
 					KeyID: '1234',
 				}),
-				'my:redis:key:1234'
+				'my:valkey:key:1234'
 			);
 		});
 
 		it('should throw error when an empty string given as param value', function () {
 			expect(() =>
-				createValkeyKey('my:redis:key:%KeyID%', {
+				createValkeyKey('my:valkey:key:%KeyID%', {
 					KeyID: '',
 				})
 			).to.throw(
@@ -122,20 +122,20 @@ describe('Create Valkey Key', function () {
 
 	describe('Valkey Keys Templates Map Creation', function () {
 		it('should throw error when given an empty string as delimiter', function () {
-			expect(() => createValkeyKeysMap(redisKeysConfig, '')).to.throw(
+			expect(() => createValkeyKeysMap(valkeyKeysConfig, '')).to.throw(
 				'Delimiter cannot be empty string'
 			);
 		});
 
 		it('should throw error when given % as delimiter', function () {
-			expect(() => createValkeyKeysMap(redisKeysConfig, '%')).to.throw(
+			expect(() => createValkeyKeysMap(valkeyKeysConfig, '%')).to.throw(
 				'Invalid delimiter. Delimiter cannot be "%". This is used for params in Valkey Key templates.'
 			);
 		});
 
 		it('should throw error when given a non string param value as delimiter', function () {
 			// @ts-expect-error : Testing invalid input
-			expect(() => createValkeyKeysMap(redisKeysConfig, 1)).to.throw(
+			expect(() => createValkeyKeysMap(valkeyKeysConfig, 1)).to.throw(
 				'Delimiter must be a string'
 			);
 		});
@@ -182,15 +182,18 @@ describe('Create Valkey Key', function () {
 	});
 
 	describe('Use Valid Config to Create Key (Without Optional Delimiter)', function () {
-		const redisKeysMap = createValkeyKeysMap(redisKeysConfig);
+		const valkeyKeysMap = createValkeyKeysMap(valkeyKeysConfig);
 
 		it('should return key app-status', function () {
-			assert.equal(createValkeyKey(redisKeysMap.appStatus, null), 'app-status');
+			assert.equal(
+				createValkeyKey(valkeyKeysMap.appStatus, null),
+				'app-status'
+			);
 		});
 
 		it('should return key for restaurants by category', function () {
 			assert.equal(
-				createValkeyKey(redisKeysMap.restaurants.byCategory, {
+				createValkeyKey(valkeyKeysMap.restaurants.byCategory, {
 					CategoryID: '1234',
 				}),
 				'RESTAURANTS:by-category:1234'
@@ -199,7 +202,7 @@ describe('Create Valkey Key', function () {
 
 		it('should return key for restaurants by city', function () {
 			assert.equal(
-				createValkeyKey(redisKeysMap.restaurants.byCity, {
+				createValkeyKey(valkeyKeysMap.restaurants.byCity, {
 					CityID: '1234',
 				}),
 				'RESTAURANTS:1234'
@@ -209,7 +212,7 @@ describe('Create Valkey Key', function () {
 		// previous deliveries of courier with id 1234
 		it('should return key for previous deliveries of courier with id 1234', function () {
 			assert.equal(
-				createValkeyKey(redisKeysMap.couriers.byID.PreviousDeliveries, {
+				createValkeyKey(valkeyKeysMap.couriers.byID.PreviousDeliveries, {
 					CourierID: '1234',
 				}),
 				'couriers:by-id:1234:previous-deliveries'
@@ -219,7 +222,7 @@ describe('Create Valkey Key', function () {
 		// orders of user with id 1234
 		it('should NOT return key for orders of user with id 1234', function () {
 			assert.notEqual(
-				createValkeyKey(redisKeysMap.orders.byUser, {
+				createValkeyKey(valkeyKeysMap.orders.byUser, {
 					UserID: '1234',
 				}),
 				'orders:of-user:'
@@ -229,14 +232,14 @@ describe('Create Valkey Key', function () {
 
 	describe('Use Valid Config to Create Key (With Optional Delimiter)', function () {
 		it('should return key for restaurants by category with given delimiter (.)', function () {
-			const redisKeysMap_WithCustomDelimiter = createValkeyKeysMap(
-				redisKeysConfig,
+			const valkeyKeysMap_WithCustomDelimiter = createValkeyKeysMap(
+				valkeyKeysConfig,
 				'.'
 			);
 
 			assert.equal(
 				createValkeyKey(
-					redisKeysMap_WithCustomDelimiter.restaurants.byCategory,
+					valkeyKeysMap_WithCustomDelimiter.restaurants.byCategory,
 					{
 						CategoryID: '1234',
 					}
