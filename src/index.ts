@@ -7,7 +7,8 @@ export {
 } from './types/valkeygen/key-config';
 
 // * Export Configure Functions
-export { createValkeyKeyParam, createValkeyKeysMap } from './configure/mapper';
+export { createValkeyKeysMap } from './configure/mapper';
+export { createValkeyKeyParam } from './configure/param';
 
 // * Export Consuming Functions
-export { createValkeyKey } from './consume/valkeygen';
+export { createValkeyKey } from './consume/create-key';

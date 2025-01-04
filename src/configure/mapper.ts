@@ -2,7 +2,6 @@ import { ScopeToKeys } from '../types/valkeygen/config-mapper';
 import {
 	IsReadonlyConfig,
 	IsValidValkeyKeysConfig2,
-	ValkeyKeysConfigParam,
 	ValkeyKeysConfigScope,
 	ValkeyKeysConfigTemplateArray,
 	ValkeyKeyTemplatesMapScope,
@@ -14,14 +13,6 @@ import {
 	validateDelimiter,
 	validateValkeyKeyConfig,
 } from './validators';
-
-export const createValkeyKeyParam = <T extends string>(
-	name: T
-): ValkeyKeysConfigParam<T> => {
-	return {
-		name,
-	};
-};
 
 const createTemplateStringFormTemplateArray = (
 	templateArray: ValkeyKeysConfigTemplateArray,
