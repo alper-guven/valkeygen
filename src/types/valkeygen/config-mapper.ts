@@ -7,8 +7,8 @@ import {
 	JoinStringArray,
 } from '../object-utils';
 import {
-	ValkeyKeysConfigTemplateArrayElements,
-	ValkeyKeysConfigParam,
+	ValkeygenConfigTemplateArrayElements,
+	ValkeygenConfigParam,
 } from './key-config';
 
 /**
@@ -72,12 +72,12 @@ export type ValkeyKeyTemplateString_FromPath__FromScope<
  * * This is used to create a Redis Key Template String.
  */
 export type Join_ValkeyKeyTemplateArray<
-	arr extends readonly ValkeyKeysConfigTemplateArrayElements[]
+	arr extends readonly ValkeygenConfigTemplateArrayElements[]
 > = `${JoinStringArray<ValkeyKeyTemplateArray_ToStringArray<arr>>}`;
 
 // * Converts a Redis Key Template Array (Array<string | ValkeyKeyParam>) to a string array.
 export type ValkeyKeyTemplateArray_ToStringArray<
-	T extends readonly ValkeyKeysConfigTemplateArrayElements[]
+	T extends readonly ValkeygenConfigTemplateArrayElements[]
 > = T extends any
 	? TailOfArray<T> extends []
 		? [makeString_StringOrValkeyKeyParam<T[0]>]
@@ -89,8 +89,8 @@ export type ValkeyKeyTemplateArray_ToStringArray<
 
 // * Get all but the first element of an array.
 export type TailOfArray<
-	T extends readonly ValkeyKeysConfigTemplateArrayElements[]
-> = T extends readonly ValkeyKeysConfigTemplateArrayElements[]
+	T extends readonly ValkeygenConfigTemplateArrayElements[]
+> = T extends readonly ValkeygenConfigTemplateArrayElements[]
 	? T extends readonly [infer _First, ...infer Rest]
 		? Rest
 		: []
@@ -98,10 +98,10 @@ export type TailOfArray<
 
 // * Converts Redis Key Param or string to string literal.
 export type makeString_StringOrValkeyKeyParam<
-	T extends string | ValkeyKeysConfigParam
+	T extends string | ValkeygenConfigParam
 > = T extends string
 	? `${T}`
-	: T extends ValkeyKeysConfigParam
+	: T extends ValkeygenConfigParam
 	? `%${T['name']}%`
 	: never;
 
@@ -109,7 +109,7 @@ export type makeString_StringOrValkeyKeyParam<
 export type TypeOfPathObject<obj, path extends string> = path extends keyof obj
 	? path extends 'SCOPE_FIRST_PART'
 		? 'scope-first-part'
-		: obj[path] extends readonly ValkeyKeysConfigTemplateArrayElements[]
+		: obj[path] extends readonly ValkeygenConfigTemplateArrayElements[]
 		? 'leaf'
 		: 'scope'
 	: 'not-key';

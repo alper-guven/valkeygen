@@ -1,13 +1,13 @@
 import {
-	ValkeyKeysConfigParam,
-	ValkeyKeysConfigScope,
-	ValkeyKeysConfigTemplateArray,
+	ValkeygenConfigParam,
+	ValkeygenConfigScope,
+	ValkeygenConfigTemplateArray,
 	ScopeOrKeyTemplate,
 } from '../types/valkeygen/key-config';
 
 export const isValkeyKeyParam = (
-	templateMember: string | ValkeyKeysConfigParam
-): templateMember is ValkeyKeysConfigParam => {
+	templateMember: string | ValkeygenConfigParam
+): templateMember is ValkeygenConfigParam => {
 	if (typeof templateMember === 'object' && templateMember.name) {
 		return true;
 	}
@@ -21,7 +21,7 @@ export const isValkeyKeyParam = (
 
 export const isValkeyKeyTemplate = (
 	possibleTemplate: ScopeOrKeyTemplate
-): possibleTemplate is ValkeyKeysConfigTemplateArray => {
+): possibleTemplate is ValkeygenConfigTemplateArray => {
 	return (
 		Array.isArray(possibleTemplate) &&
 		possibleTemplate.every(
@@ -43,7 +43,7 @@ export const validateValkeyKeyTemplate = (
 
 export const isScopeLike = (
 	possibleScope: unknown
-): possibleScope is ValkeyKeysConfigScope => {
+): possibleScope is ValkeygenConfigScope => {
 	return (
 		possibleScope != null &&
 		typeof possibleScope === 'object' &&
@@ -51,9 +51,7 @@ export const isScopeLike = (
 	);
 };
 
-export const isValidScope = (
-	scope: unknown
-): scope is ValkeyKeysConfigScope => {
+export const isValidScope = (scope: unknown): scope is ValkeygenConfigScope => {
 	if (isScopeLike(scope)) {
 		for (const [key, value] of Object.entries(scope)) {
 			if (key === 'SCOPE_FIRST_PART') {

@@ -1,9 +1,9 @@
 import { ScopeToKeys } from '../types/valkeygen/config-mapper';
 import {
 	IsReadonlyConfig,
-	IsValidValkeyKeysConfig2,
-	ValkeyKeysConfigScope,
-	ValkeyKeysConfigTemplateArray,
+	IsValidValkeygenConfig2,
+	ValkeygenConfigScope,
+	ValkeygenConfigTemplateArray,
 	ValkeyKeyTemplatesMapScope,
 } from '../types/valkeygen/key-config';
 import {
@@ -15,7 +15,7 @@ import {
 } from './validators';
 
 const createTemplateStringFormTemplateArray = (
-	templateArray: ValkeyKeysConfigTemplateArray,
+	templateArray: ValkeygenConfigTemplateArray,
 	delimiter: string
 ): string | null => {
 	validateValkeyKeyTemplate(templateArray);
@@ -39,7 +39,7 @@ const createTemplateStringFormTemplateArray = (
 
 const createTemplateLeaf = (
 	parentTemplateString: string | null,
-	leafKeyTemplateArray: ValkeyKeysConfigTemplateArray,
+	leafKeyTemplateArray: ValkeygenConfigTemplateArray,
 	delimiter: string
 ): string | null => {
 	validateValkeyKeyTemplate(leafKeyTemplateArray);
@@ -58,7 +58,7 @@ const createTemplateLeaf = (
 
 const createTemplateScope = (
 	parentTemplateString: string | null,
-	scope: ValkeyKeysConfigScope,
+	scope: ValkeygenConfigScope,
 	delimiter: string
 ): ValkeyKeyTemplatesMapScope => {
 	const scopeTemplate: ValkeyKeyTemplatesMapScope = {};
@@ -106,7 +106,7 @@ export const createValkeyKeysMap = <
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	T extends Record<string, any>,
 	Delimiter extends string = ':',
-	K = IsValidValkeyKeysConfig2<T> extends true ? 'valid' : 'invalid',
+	K = IsValidValkeygenConfig2<T> extends true ? 'valid' : 'invalid',
 	ReturnValue = 'valid' extends K
 		? IsReadonlyConfig<T> extends 'yes'
 			? ScopeToKeys<T>
@@ -126,7 +126,7 @@ export const createValkeyKeysMap = <
 
 	const map: ValkeyKeyTemplatesMapScope = createTemplateScope(
 		null,
-		redisKeysConfig as unknown as ValkeyKeysConfigScope,
+		redisKeysConfig as unknown as ValkeygenConfigScope,
 		delimiter
 	);
 

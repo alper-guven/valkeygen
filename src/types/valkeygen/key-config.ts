@@ -4,30 +4,28 @@ import { DeepMutable } from '../object-utils';
 
 // * Template array elements
 
-export type ValkeyKeysConfigParam<Name extends string = string> = {
+export type ValkeygenConfigParam<Name extends string = string> = {
 	name: Name;
 };
 
-export type ValkeyKeysConfigTemplateArrayElements =
+export type ValkeygenConfigTemplateArrayElements =
 	| string
-	| ValkeyKeysConfigParam;
+	| ValkeygenConfigParam;
 
-export type ValkeyKeysConfigTemplateArray = Array<
-	string | ValkeyKeysConfigParam
->;
+export type ValkeygenConfigTemplateArray = Array<string | ValkeygenConfigParam>;
 
 // * Redis Key Config
 
-export type ValkeyKeysConfigScope = {
-	SCOPE_FIRST_PART: ValkeyKeysConfigTemplateArray;
+export type ValkeygenConfigScope = {
+	SCOPE_FIRST_PART: ValkeygenConfigTemplateArray;
 	[key: string]: ScopeOrKeyTemplate;
 };
 
 export type ScopeOrKeyTemplate =
-	| ValkeyKeysConfigTemplateArray
-	| ValkeyKeysConfigScope;
+	| ValkeygenConfigTemplateArray
+	| ValkeygenConfigScope;
 
-export type ValkeyKeysConfig = ValkeyKeysConfigScope;
+export type ValkeygenConfig = ValkeygenConfigScope;
 
 // * Redis Key Config mapped to Redis Key Template String map
 
@@ -37,8 +35,9 @@ export type ValkeyKeyTemplatesMapScope = {
 
 // * Redis Key Config validation types
 
-export type IsValidValkeyKeysConfig2<T> =
-	DeepMutable<T> extends ValkeyKeysConfig ? true : false;
+export type IsValidValkeygenConfig2<T> = DeepMutable<T> extends ValkeygenConfig
+	? true
+	: false;
 
 export type IsReadonlyConfig<T> = 'SCOPE_FIRST_PART' extends keyof T
 	? T['SCOPE_FIRST_PART'] extends any[]

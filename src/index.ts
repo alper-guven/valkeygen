@@ -1,9 +1,9 @@
 // * Export Type Definitions
 export {
-	ValkeyKeysConfigParam,
-	ValkeyKeysConfigScope,
-	ValkeyKeysConfigTemplateArray,
-	ValkeyKeysConfig,
+	ValkeygenConfigParam,
+	ValkeygenConfigScope,
+	ValkeygenConfigTemplateArray,
+	ValkeygenConfig,
 } from './types/valkeygen/key-config';
 
 // * Export Configure Functions
