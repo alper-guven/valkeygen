@@ -2,7 +2,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 
 /**
- * * Extract parameters from a Redis Key Template String
+ * * Extract parameters from a Valkey Key Template String
  * * and return an object with the parameters as keys.
  */
 export type getRequiredParamsFromTemplateString<T extends string> =
@@ -12,7 +12,7 @@ export type getRequiredParamsFromTemplateString<T extends string> =
 		  }
 		: null;
 
-// * Extract parameters from a Redis Key Template String
+// * Extract parameters from a Valkey Key Template String
 export type getValkeyKeyParamsFromTemplateString<
 	T extends string,
 	_D extends number = 10

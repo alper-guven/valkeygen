@@ -1,8 +1,8 @@
-# Create Redis Key
+# Create Valkey Key
 
-A Redis key creation utility.
+A Valkey key creation utility.
 
-Create `Redis Key Templates`, which include parameters, using a nested config object & use your `Redis Key Template` strings to create Redis Keys.
+Create `Valkey Key Templates`, which include parameters, using a nested config object & use your `Valkey Key Template` strings to create Valkey Keys.
 
 > This package heavily uses [Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) which is available since [TypeScript 4.1](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html) so you need at least this version of Typescript for this package to properly work.
 
@@ -43,9 +43,9 @@ Type definitions? Included!
 
 ## How It Works
 
-Eventual purpose of this library is to create a `Redis Key` (which is basically a string) using a template which we call in this library a `Redis Key Template`.
+Eventual purpose of this library is to create a `Valkey Key` (which is basically a string) using a template which we call in this library a `Valkey Key Template`.
 
-There is a function called `createValkeyKey()` which takes a `Redis Key Template` and an object which includes values for the params in the `Redis Key Template`, then replaces parameters in template with the given values.
+There is a function called `createValkeyKey()` which takes a `Valkey Key Template` and an object which includes values for the params in the `Valkey Key Template`, then replaces parameters in template with the given values.
 
 Most basic usage is as follows:
 
@@ -59,9 +59,9 @@ This creates a `string` which equals to `posts:1`
 
 There are 3 ways you can use this library.
 
-- Create a `Redis Key Templates Map` using `createValkeyKeysMap()` to use it in conjunction with `createValkeyKey()` to create Redis keys.
-- Create an object which has keys shaped as a `Redis Key Template` and use it in conjunction with `createValkeyKey()` to create Redis keys.
-- Just use `createValkeyKey()` function by writing your `Redis Key Template` as parameter to create a Redis key.
+- Create a `Valkey Key Templates Map` using `createValkeyKeysMap()` to use it in conjunction with `createValkeyKey()` to create Valkey keys.
+- Create an object which has keys shaped as a `Valkey Key Template` and use it in conjunction with `createValkeyKey()` to create Valkey keys.
+- Just use `createValkeyKey()` function by writing your `Valkey Key Template` as parameter to create a Valkey key.
 
 There are detailed explanations for each of them down below.
 
@@ -69,9 +69,9 @@ There are detailed explanations for each of them down below.
 
 There are 3 ways you can use this library. Examples for different options show how you can get the same output using different methods.
 
-> You will get parameter suggestions on your IDE based on the `Redis Key Template` you provided to `createValkeyKey()` function.
+> You will get parameter suggestions on your IDE based on the `Valkey Key Template` you provided to `createValkeyKey()` function.
 
-> All params on a `Redis Key Template` are required. You will get type errors if you don't provide all of them.
+> All params on a `Valkey Key Template` are required. You will get type errors if you don't provide all of them.
 
 First of all, import needed functions as follows:
 
@@ -89,7 +89,7 @@ const { createValkeyKeyParam, createValkeyKeysMap, createValkeyKey } = CRK;
 
 ### Option 1 (Recommended)
 
-Create a `Redis Keys Config` object.
+Create a `Valkey Keys Config` object.
 
 > You should write `as const` at the end of the object for things to properly work.
 
@@ -138,7 +138,7 @@ const redisKeysConfig = {
 } as const;
 ```
 
-Then create a `Redis Keys Templates Map` using the config:
+Then create a `Valkey Keys Templates Map` using the config:
 
 > If you give an invalid config, return type will be `never`. I explained why it works this way at [FAQ](#faq) section.
 
@@ -146,7 +146,7 @@ Then create a `Redis Keys Templates Map` using the config:
 const ValkeyKeysMap = createValkeyKeysMap(exampleValkeyKeysConfig);
 ```
 
-It will create a `Redis Keys Templates Map`
+It will create a `Valkey Keys Templates Map`
 
 ```js
 {
@@ -179,7 +179,7 @@ It will create a `Redis Keys Templates Map`
 }
 ```
 
-You can then use this map to create a Redis key when needed:
+You can then use this map to create a Valkey key when needed:
 
 This will produce `couriers:by-id:1234:previous-deliveries`
 
@@ -202,11 +202,11 @@ const latestOrdersOfCourierInCityRK = createValkeyKey(ValkeyKeysMap.orders.byCit
 
 ### Option 2
 
-Instead of creating a `Redis Keys Templates Map` using `createValkeyKeysMap()` with a config, you can write it yourself.
+Instead of creating a `Valkey Keys Templates Map` using `createValkeyKeysMap()` with a config, you can write it yourself.
 
 > You should write `as const` at the end of the object for things to properly work.
 
-> When you write `Redis Key Templates` manually, be aware that it is much more error prone than using `Option 1`.
+> When you write `Valkey Key Templates` manually, be aware that it is much more error prone than using `Option 1`.
 
 ```typescript
 const DeliveryServiceValkeyKeyTemplatesMap = {
@@ -233,7 +233,7 @@ const latestOrdersOfCourierInCityRK = createValkeyKey(DeliveryServiceValkeyKeyTe
 
 This is most basic usage of this package.
 
-You can just write your `Redis Key Template` as a parameter:
+You can just write your `Valkey Key Template` as a parameter:
 
 This will produce `orders:by-city:istanbul:of-courier:1234`
 
@@ -248,38 +248,38 @@ const latestOrdersOfCourierInCityRK = createValkeyKey('orders:by-city:%CityName%
 
 ### Documentation - Terms
 
-#### Redis Key Template
+#### Valkey Key Template
 
-A string to be used as a template to create a Redis key.
+A string to be used as a template to create a Valkey key.
 
 Format: `a-key-part:%ParamName1%:another-key-part:%ParamName2%`
 
-#### Redis Key Param
+#### Valkey Key Param
 
-A part of `Redis Key Template` which represents a variable part of the key.
+A part of `Valkey Key Template` which represents a variable part of the key.
 
 Format: `%ParamName%`
 
-#### Redis Key Part
+#### Valkey Key Part
 
-A part of `Redis Key Template` which is either a `Redis Key Param` or a `string`
+A part of `Valkey Key Template` which is either a `Valkey Key Param` or a `string`
 
 Formats: `%ParamName%` | `random-text`
 
-#### Redis Keys Config Template Array
+#### Valkey Keys Config Template Array
 
-An array of `Redis Key Part`
+An array of `Valkey Key Part`
 
 ```typescript
 const exampleTemplateArray = ['key1', createValkeyKeyParam('Param1')];
 ```
 
-#### Redis Keys Config Scope
+#### Valkey Keys Config Scope
 
-Main building block of the a `Redis Keys Config`.
+Main building block of the a `Valkey Keys Config`.
 
-- It has to have a key named `SCOPE_FIRST_PART` which is a `Redis Keys Config Template Array`
-- Other keys can be either a `Redis Keys Config Template Array` or a `Redis Keys Config Scope`
+- It has to have a key named `SCOPE_FIRST_PART` which is a `Valkey Keys Config Template Array`
+- Other keys can be either a `Valkey Keys Config Template Array` or a `Valkey Keys Config Scope`
 
 ```typescript
 const exampleScope = {
@@ -295,11 +295,11 @@ const exampleScope = {
 };
 ```
 
-#### Redis Keys Config
+#### Valkey Keys Config
 
-A config object to create `Redis Keys Template Map`
+A config object to create `Valkey Keys Template Map`
 
-- This is actually a `Redis Keys Config Scope`
+- This is actually a `Valkey Keys Config Scope`
 
 ```typescript
 const exampleValkeyKeysConfig = {
@@ -313,7 +313,7 @@ const exampleValkeyKeysConfig = {
 } as const;
 ```
 
-#### Redis Keys Template Map
+#### Valkey Keys Template Map
 
 This is the product of `createValkeyKeysMap()` function.
 
@@ -337,7 +337,7 @@ When you use this config to create a map:
 createValkeyKeysMap(exampleValkeyKeysConfig);
 ```
 
-It will produce this object which is a `Redis Keys Template Map`:
+It will produce this object which is a `Valkey Keys Template Map`:
 
 ```javascript
 {
@@ -349,7 +349,7 @@ It will produce this object which is a `Redis Keys Template Map`:
 }
 ```
 
-You can then use it with `createValkeyKey()` to create Redis keys as needed.
+You can then use it with `createValkeyKey()` to create Valkey keys as needed.
 
 ### Documentation - Functions
 
@@ -357,9 +357,9 @@ You can then use it with `createValkeyKey()` to create Redis keys as needed.
 
 `createValkeyKeyParam(paramName: string)`
 
-Creates a `Redis Key Param` object.
+Creates a `Valkey Key Param` object.
 
-It can be used in a `Redis Keys Config Template Array` when creating `Redis Keys Config`
+It can be used in a `Valkey Keys Config Template Array` when creating `Valkey Keys Config`
 
 ```typescript
 const exampleValkeyKeysConfig = {
@@ -378,13 +378,13 @@ createValkeyKeysMap(
 )
 ```
 
-Creates a `Redis Keys Template Map` using a `Redis Keys Config` object.
+Creates a `Valkey Keys Template Map` using a `Valkey Keys Config` object.
 
 Default delimiter is colon (`:`)
 
 If you don't want to use a delimiter, give an empty string (`''`) to `optionalDelimiter` parameter.
 
-> For most cases (like 95% of them), you will use a delimiter. Therefore I chose the most commonly used one (colon `:`), which is also used in official Redis tutorials, as the default delimiter.
+> For most cases (like 95% of them), you will use a delimiter. Therefore I chose the most commonly used one (colon `:`), which is also used in official Valkey tutorials, as the default delimiter.
 
 > `redisKeysConfig` should be given as the example below. Otherwise you won't get suggestions on `createValkeyKey()` and also Typescript will give an error when you try to provide parameter values.
 
@@ -393,7 +393,7 @@ If you don't want to use a delimiter, give an empty string (`''`) to `optionalDe
 Given the config following config:
 
 ```typescript
-// a Redis Keys Config
+// a Valkey Keys Config
 const exampleValkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
 	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
@@ -411,7 +411,7 @@ And called as follows:
 const exampleValkeyKeysTemplateMap = createValkeyKeysMap(exampleValkeyKeysConfig);
 ```
 
-It will produce this object which is a `Redis Keys Template Map`:
+It will produce this object which is a `Valkey Keys Template Map`:
 
 ```javascript
 {
@@ -432,7 +432,7 @@ createValkeyKey(
 ): string
 ```
 
-Creates a Redis key using a `Redis Key Template` and replacing parameters on template with given parameter values.
+Creates a Valkey key using a `Valkey Key Template` and replacing parameters on template with given parameter values.
 
 ```typescript
 const blogPostCommentRepliesRK = createValkeyKey('posts:%PostID%:comments:%CommentID%:replies', {

@@ -17,7 +17,7 @@ import {
  * ! Otherwise typescript might give an error.
  */
 
-// * Convert Redis Keys Config (readonly) to Redis Key Template Map
+// * Convert Valkey Keys Config (readonly) to Valkey Key Template Map
 export type ScopeToKeys<
 	T extends Record<string, any>,
 	X extends Record<string, any> = T,
@@ -39,7 +39,7 @@ export type ScopeToKeys<
 	  }
 	: never;
 
-// * Create a template string by taking a Redis Keys Config object and a path.
+// * Create a template string by taking a Valkey Keys Config object and a path.
 export type ValkeyKeyTemplateString_FromPath__Main<
 	KeyRegistry extends Record<string, any>,
 	Path extends string
@@ -68,14 +68,14 @@ export type ValkeyKeyTemplateString_FromPath__FromScope<
 	: never;
 
 /**
- * * Join a Redis KeyTemplate Array (Array<string | ValkeyKeyParam>) into a string.
- * * This is used to create a Redis Key Template String.
+ * * Join a Valkey KeyTemplate Array (Array<string | ValkeyKeyParam>) into a string.
+ * * This is used to create a Valkey Key Template String.
  */
 export type Join_ValkeyKeyTemplateArray<
 	arr extends readonly ValkeygenConfigTemplateArrayElements[]
 > = `${JoinStringArray<ValkeyKeyTemplateArray_ToStringArray<arr>>}`;
 
-// * Converts a Redis Key Template Array (Array<string | ValkeyKeyParam>) to a string array.
+// * Converts a Valkey Key Template Array (Array<string | ValkeyKeyParam>) to a string array.
 export type ValkeyKeyTemplateArray_ToStringArray<
 	T extends readonly ValkeygenConfigTemplateArrayElements[]
 > = T extends any
@@ -96,7 +96,7 @@ export type TailOfArray<
 		: []
 	: [];
 
-// * Converts Redis Key Param or string to string literal.
+// * Converts Valkey Key Param or string to string literal.
 export type makeString_StringOrValkeyKeyParam<
 	T extends string | ValkeygenConfigParam
 > = T extends string

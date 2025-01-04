@@ -46,7 +46,7 @@ export function createValkeyKey<T extends string>(
 
 	if (params == null) {
 		throw new Error(
-			'Redis Key Template String has params, but no params were provided.'
+			'Valkey Key Template String has params, but no params were provided.'
 		);
 	}
 
@@ -62,13 +62,13 @@ export function createValkeyKey<T extends string>(
 
 		if (paramValue == null) {
 			throw new Error(
-				`Redis Key Template String has param named <${paramName}>, but no value provided it.`
+				`Valkey Key Template String has param named <${paramName}>, but no value provided it.`
 			);
 		}
 
 		if (isParamValueValid(paramValue) === false) {
 			throw new Error(
-				`Redis Key Template String has param named <${paramName}>, but given value <${paramValue}> is invalid.`
+				`Valkey Key Template String has param named <${paramName}>, but given value <${paramValue}> is invalid.`
 			);
 		}
 

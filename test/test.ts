@@ -90,7 +90,7 @@ type YesOrNo<T, K extends 'yes' extends T ? 'yes' : 'no'> = 'x';
 // const map3 = createValkeyKeysMap(customObj3);
 // type isValidCFG_3 = IsNever<typeof map3, true>;
 
-describe('Create Redis Key', function () {
+describe('Create Valkey Key', function () {
 	describe('Only Key Creator', function () {
 		it('should return empty string', function () {
 			assert.equal(createValkeyKey('', null), '');
@@ -115,12 +115,12 @@ describe('Create Redis Key', function () {
 					KeyID: '',
 				})
 			).to.throw(
-				'Redis Key Template String has param named <KeyID>, but given value <> is invalid.'
+				'Valkey Key Template String has param named <KeyID>, but given value <> is invalid.'
 			);
 		});
 	});
 
-	describe('Redis Keys Templates Map Creation', function () {
+	describe('Valkey Keys Templates Map Creation', function () {
 		it('should throw error when given an empty string as delimiter', function () {
 			expect(() => createValkeyKeysMap(redisKeysConfig, '')).to.throw(
 				'Delimiter cannot be empty string'
@@ -129,7 +129,7 @@ describe('Create Redis Key', function () {
 
 		it('should throw error when given % as delimiter', function () {
 			expect(() => createValkeyKeysMap(redisKeysConfig, '%')).to.throw(
-				'Invalid delimiter. Delimiter cannot be "%". This is used for params in Redis Key templates.'
+				'Invalid delimiter. Delimiter cannot be "%". This is used for params in Valkey Key templates.'
 			);
 		});
 
@@ -150,7 +150,7 @@ describe('Create Redis Key', function () {
 
 			expect(() => {
 				const testRandomObject = createValkeyKeysMap(randomObject);
-			}).to.throw('Redis Key Config is not valid');
+			}).to.throw('Valkey Key Config is not valid');
 		});
 
 		it('should throw error when given an invalid config (no SCOPE_FIRST_PART)', function () {
@@ -162,7 +162,7 @@ describe('Create Redis Key', function () {
 			expect(() => {
 				const testRandomObject = createValkeyKeysMap(randomObject);
 			}).to.throw(
-				'Redis Key Config is not valid: Config Object itself is not a valid Redis Key Scope'
+				'Valkey Key Config is not valid: Config Object itself is not a valid Valkey Key Scope'
 			);
 		});
 
@@ -176,7 +176,7 @@ describe('Create Redis Key', function () {
 			expect(() => {
 				const testRandomObject = createValkeyKeysMap(randomObject);
 			}).to.throw(
-				'Redis Key Config is not valid: Redis Template Array must be an array of strings or Redis Key Param objects'
+				'Valkey Key Config is not valid: Valkey Template Array must be an array of strings or Valkey Key Param objects'
 			);
 		});
 	});

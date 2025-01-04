@@ -14,7 +14,7 @@ export type ValkeygenConfigTemplateArrayElements =
 
 export type ValkeygenConfigTemplateArray = Array<string | ValkeygenConfigParam>;
 
-// * Redis Key Config
+// * Valkey Key Config
 
 export type ValkeygenConfigScope = {
 	SCOPE_FIRST_PART: ValkeygenConfigTemplateArray;
@@ -27,13 +27,13 @@ export type ScopeOrKeyTemplate =
 
 export type ValkeygenConfig = ValkeygenConfigScope;
 
-// * Redis Key Config mapped to Redis Key Template String map
+// * Valkey Key Config mapped to Valkey Key Template String map
 
 export type ValkeyKeyTemplatesMapScope = {
 	[key: string]: string | Record<string, string | ValkeyKeyTemplatesMapScope>;
 };
 
-// * Redis Key Config validation types
+// * Valkey Key Config validation types
 
 export type IsValidValkeygenConfig2<T> = DeepMutable<T> extends ValkeygenConfig
 	? true
