@@ -1,11 +1,11 @@
-import { ScopeToKeys } from '../types/valkeygen/config-mapper';
+import { ScopeToKeys } from '../types/config-mapper';
 import {
 	IsReadonlyConfig,
 	IsValidValkeygenConfig2,
 	ValkeygenConfigScope,
 	ValkeygenConfigTemplateArray,
 	ValkeyKeyTemplatesMapScope,
-} from '../types/valkeygen/key-config';
+} from '../types/key-config';
 import {
 	isValkeyKeyParam,
 	validateValkeyKeyTemplate,

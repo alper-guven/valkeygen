@@ -1,5 +1,5 @@
 import { isParamValueValid } from './validators';
-import { getRequiredParamsFromTemplateString } from '../types/valkeygen/consumers';
+import { getRequiredParamsFromTemplateString } from '../types/consumers';
 
 const findParamNamesInTemplateString = (templateString: string): string[] => {
 	const paramNames: string[] = [];

@@ -5,7 +5,7 @@ import {
 	Path_GetFirstPart,
 	Path_GetRest,
 	JoinStringArray,
-} from '../object-utils';
+} from './util/object-utils';
 import {
 	ValkeygenConfigTemplateArrayElements,
 	ValkeygenConfigParam,

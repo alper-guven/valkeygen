@@ -6,7 +6,7 @@ import {
 	createValkeyKeysMap,
 	ValkeygenConfig,
 } from '../src';
-import { IsReadonlyConfig } from '../src/types/valkeygen/key-config';
+import { IsReadonlyConfig } from '../src/types/key-config';
 
 const valkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],

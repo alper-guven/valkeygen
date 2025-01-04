@@ -1,4 +1,4 @@
-import { ValkeygenConfigParam } from '../types/valkeygen/key-config';
+import { ValkeygenConfigParam } from '../types/key-config';
 
 export const createValkeyKeyParam = <T extends string>(
 	name: T

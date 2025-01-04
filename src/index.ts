@@ -4,7 +4,7 @@ export {
 	ValkeygenConfigScope,
 	ValkeygenConfigTemplateArray,
 	ValkeygenConfig,
-} from './types/valkeygen/key-config';
+} from './types/key-config';
 
 // * Export Configure Functions
 export { createValkeyKeysMap } from './configure/mapper';

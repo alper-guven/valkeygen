@@ -3,7 +3,7 @@ import {
 	ValkeygenConfigScope,
 	ValkeygenConfigTemplateArray,
 	ScopeOrKeyTemplate,
-} from '../types/valkeygen/key-config';
+} from '../types/key-config';
 
 export const isValkeyKeyParam = (
 	templateMember: string | ValkeygenConfigParam
