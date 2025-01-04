@@ -1,33 +1,33 @@
-import { ScopeToKeys } from '../types/create-redis-key/crk-config-mapper';
+import { ScopeToKeys } from '../types/valkeygen/crk-config-mapper';
 import {
 	IsReadonlyConfig,
-	IsValidRedisKeysConfig2,
-	RedisKeysConfigParam,
-	RedisKeysConfigScope,
-	RedisKeysConfigTemplateArray,
-	RedisKeyTemplatesMapScope,
-} from '../types/create-redis-key/crk-redis-key-config';
+	IsValidValkeyKeysConfig2,
+	ValkeyKeysConfigParam,
+	ValkeyKeysConfigScope,
+	ValkeyKeysConfigTemplateArray,
+	ValkeyKeyTemplatesMapScope,
+} from '../types/valkeygen/crk-redis-key-config';
 import {
-	isRedisKeyParam,
-	validateRedisKeyTemplate,
+	isValkeyKeyParam,
+	validateValkeyKeyTemplate,
 	isScopeLike,
 	validateDelimiter,
-	validateRedisKeyConfig,
+	validateValkeyKeyConfig,
 } from './validators';
 
-export const createRedisKeyParam = <T extends string>(
+export const createValkeyKeyParam = <T extends string>(
 	name: T
-): RedisKeysConfigParam<T> => {
+): ValkeyKeysConfigParam<T> => {
 	return {
 		name,
 	};
 };
 
 const createTemplateStringFormTemplateArray = (
-	templateArray: RedisKeysConfigTemplateArray,
+	templateArray: ValkeyKeysConfigTemplateArray,
 	delimiter: string
 ): string | null => {
-	validateRedisKeyTemplate(templateArray);
+	validateValkeyKeyTemplate(templateArray);
 
 	if (templateArray.length === 0) {
 		return null;
@@ -35,7 +35,7 @@ const createTemplateStringFormTemplateArray = (
 
 	const templateString = templateArray
 		.map((templateMember) => {
-			if (isRedisKeyParam(templateMember)) {
+			if (isValkeyKeyParam(templateMember)) {
 				return `%${templateMember.name}%`;
 			}
 
@@ -48,10 +48,10 @@ const createTemplateStringFormTemplateArray = (
 
 const createTemplateLeaf = (
 	parentTemplateString: string | null,
-	leafKeyTemplateArray: RedisKeysConfigTemplateArray,
+	leafKeyTemplateArray: ValkeyKeysConfigTemplateArray,
 	delimiter: string
 ): string | null => {
-	validateRedisKeyTemplate(leafKeyTemplateArray);
+	validateValkeyKeyTemplate(leafKeyTemplateArray);
 
 	const templateString = createTemplateStringFormTemplateArray(
 		leafKeyTemplateArray,
@@ -67,10 +67,10 @@ const createTemplateLeaf = (
 
 const createTemplateScope = (
 	parentTemplateString: string | null,
-	scope: RedisKeysConfigScope,
+	scope: ValkeyKeysConfigScope,
 	delimiter: string
-): RedisKeyTemplatesMapScope => {
-	const scopeTemplate: RedisKeyTemplatesMapScope = {};
+): ValkeyKeyTemplatesMapScope => {
+	const scopeTemplate: ValkeyKeyTemplatesMapScope = {};
 
 	const scopeFirstPartString = createTemplateStringFormTemplateArray(
 		scope.SCOPE_FIRST_PART,
@@ -111,11 +111,11 @@ const createTemplateScope = (
 	return scopeTemplate;
 };
 
-export const createRedisKeysMap = <
+export const createValkeyKeysMap = <
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	T extends Record<string, any>,
 	Delimiter extends string = ':',
-	K = IsValidRedisKeysConfig2<T> extends true ? 'valid' : 'invalid',
+	K = IsValidValkeyKeysConfig2<T> extends true ? 'valid' : 'invalid',
 	ReturnValue = 'valid' extends K
 		? IsReadonlyConfig<T> extends 'yes'
 			? ScopeToKeys<T>
@@ -131,11 +131,11 @@ export const createRedisKeysMap = <
 
 	const delimiter = optionalDelimiter || ':';
 
-	validateRedisKeyConfig(redisKeysConfig);
+	validateValkeyKeyConfig(redisKeysConfig);
 
-	const map: RedisKeyTemplatesMapScope = createTemplateScope(
+	const map: ValkeyKeyTemplatesMapScope = createTemplateScope(
 		null,
-		redisKeysConfig as unknown as RedisKeysConfigScope,
+		redisKeysConfig as unknown as ValkeyKeysConfigScope,
 		delimiter
 	);
 

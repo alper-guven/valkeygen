@@ -8,14 +8,14 @@
 export type getRequiredParamsFromTemplateString<T extends string> =
 	T extends `${string}%${infer _ParamName}%${infer _Rest}`
 		? {
-				[K in getRedisKeyParamsFromTemplateString<T>[number]]: string;
+				[K in getValkeyKeyParamsFromTemplateString<T>[number]]: string;
 		  }
 		: null;
 
 // * Extract parameters from a Redis Key Template String
-export type getRedisKeyParamsFromTemplateString<
+export type getValkeyKeyParamsFromTemplateString<
 	T extends string,
 	_D extends number = 10
 > = T extends `${string}%${infer ParamName}%${infer Rest}`
-	? [ParamName, ...getRedisKeyParamsFromTemplateString<Rest>]
+	? [ParamName, ...getValkeyKeyParamsFromTemplateString<Rest>]
 	: [];

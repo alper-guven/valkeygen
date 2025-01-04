@@ -1,16 +1,16 @@
 // * Export Type Definitions
 export {
-	RedisKeysConfigParam,
-	RedisKeysConfigScope,
-	RedisKeysConfigTemplateArray,
-	RedisKeysConfig,
-} from './types/create-redis-key/crk-redis-key-config';
+	ValkeyKeysConfigParam,
+	ValkeyKeysConfigScope,
+	ValkeyKeysConfigTemplateArray,
+	ValkeyKeysConfig,
+} from './types/valkeygen/crk-redis-key-config';
 
 // * Export Configure Functions
 export {
-	createRedisKeyParam,
-	createRedisKeysMap,
-} from './configure/create-redis-keys-map';
+	createValkeyKeyParam,
+	createValkeyKeysMap,
+} from './configure/valkeygen-map';
 
 // * Export Consuming Functions
-export { createRedisKey } from './consume/create-redis-key';
+export { createValkeyKey } from './consume/valkeygen';

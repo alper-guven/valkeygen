@@ -7,8 +7,8 @@ import {
 	JoinStringArray,
 } from '../object-utils';
 import {
-	RedisKeysConfigTemplateArrayElements,
-	RedisKeysConfigParam,
+	ValkeyKeysConfigTemplateArrayElements,
+	ValkeyKeysConfigParam,
 } from './crk-redis-key-config';
 
 /**
@@ -31,7 +31,7 @@ export type ScopeToKeys<
 							X,
 							`${AggregatedPath extends '' ? '' : `${AggregatedPath}.`}${K}`
 					  >
-					: RedisKeyTemplateString_FromPath__Main<
+					: ValkeyKeyTemplateString_FromPath__Main<
 							X,
 							`${AggregatedPath extends '' ? '' : `${AggregatedPath}.`}${K}`
 					  >
@@ -40,7 +40,7 @@ export type ScopeToKeys<
 	: never;
 
 // * Create a template string by taking a Redis Keys Config object and a path.
-export type RedisKeyTemplateString_FromPath__Main<
+export type ValkeyKeyTemplateString_FromPath__Main<
 	KeyRegistry extends Record<string, any>,
 	Path extends string
 > = KeyRegistry['SCOPE_FIRST_PART'] extends readonly any[]
@@ -48,60 +48,60 @@ export type RedisKeyTemplateString_FromPath__Main<
 			? ''
 			: `${JoinStringArray<
 					KeyRegistry['SCOPE_FIRST_PART']
-			  >}:`}${RedisKeyTemplateString_FromPath__FromScope<KeyRegistry, Path>}`
+			  >}:`}${ValkeyKeyTemplateString_FromPath__FromScope<KeyRegistry, Path>}`
 	: never;
 
 // * Create a template string by taking a Config Scope object and a path.
-export type RedisKeyTemplateString_FromPath__FromScope<
+export type ValkeyKeyTemplateString_FromPath__FromScope<
 	KeyRegistry extends Record<string, any>,
 	Path extends string,
 	PathFirst_ObjType = TypeOfPathObject<KeyRegistry, Path_GetFirstPart<Path>>
 > = PathFirst_ObjType extends 'scope'
-	? `${Join_RedisKeyTemplateArray<
+	? `${Join_ValkeyKeyTemplateArray<
 			KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_FIRST_PART']
-	  >}:${RedisKeyTemplateString_FromPath__FromScope<
+	  >}:${ValkeyKeyTemplateString_FromPath__FromScope<
 			KeyRegistry[Path_GetFirstPart<Path>],
 			Path_GetRest<Path>
 	  >}`
 	: PathFirst_ObjType extends 'leaf'
-	? `${Join_RedisKeyTemplateArray<KeyRegistry[Path_GetFirstPart<Path>]>}`
+	? `${Join_ValkeyKeyTemplateArray<KeyRegistry[Path_GetFirstPart<Path>]>}`
 	: never;
 
 /**
- * * Join a Redis KeyTemplate Array (Array<string | RedisKeyParam>) into a string.
+ * * Join a Redis KeyTemplate Array (Array<string | ValkeyKeyParam>) into a string.
  * * This is used to create a Redis Key Template String.
  */
-export type Join_RedisKeyTemplateArray<
-	arr extends readonly RedisKeysConfigTemplateArrayElements[]
-> = `${JoinStringArray<RedisKeyTemplateArray_ToStringArray<arr>>}`;
+export type Join_ValkeyKeyTemplateArray<
+	arr extends readonly ValkeyKeysConfigTemplateArrayElements[]
+> = `${JoinStringArray<ValkeyKeyTemplateArray_ToStringArray<arr>>}`;
 
-// * Converts a Redis Key Template Array (Array<string | RedisKeyParam>) to a string array.
-export type RedisKeyTemplateArray_ToStringArray<
-	T extends readonly RedisKeysConfigTemplateArrayElements[]
+// * Converts a Redis Key Template Array (Array<string | ValkeyKeyParam>) to a string array.
+export type ValkeyKeyTemplateArray_ToStringArray<
+	T extends readonly ValkeyKeysConfigTemplateArrayElements[]
 > = T extends any
 	? TailOfArray<T> extends []
-		? [makeString_StringOrRedisKeyParam<T[0]>]
+		? [makeString_StringOrValkeyKeyParam<T[0]>]
 		: readonly [
-				makeString_StringOrRedisKeyParam<T[0]>,
-				...RedisKeyTemplateArray_ToStringArray<TailOfArray<T>>
+				makeString_StringOrValkeyKeyParam<T[0]>,
+				...ValkeyKeyTemplateArray_ToStringArray<TailOfArray<T>>
 		  ]
 	: never;
 
 // * Get all but the first element of an array.
 export type TailOfArray<
-	T extends readonly RedisKeysConfigTemplateArrayElements[]
-> = T extends readonly RedisKeysConfigTemplateArrayElements[]
+	T extends readonly ValkeyKeysConfigTemplateArrayElements[]
+> = T extends readonly ValkeyKeysConfigTemplateArrayElements[]
 	? T extends readonly [infer _First, ...infer Rest]
 		? Rest
 		: []
 	: [];
 
 // * Converts Redis Key Param or string to string literal.
-export type makeString_StringOrRedisKeyParam<
-	T extends string | RedisKeysConfigParam
+export type makeString_StringOrValkeyKeyParam<
+	T extends string | ValkeyKeysConfigParam
 > = T extends string
 	? `${T}`
-	: T extends RedisKeysConfigParam
+	: T extends ValkeyKeysConfigParam
 	? `%${T['name']}%`
 	: never;
 
@@ -109,7 +109,7 @@ export type makeString_StringOrRedisKeyParam<
 export type TypeOfPathObject<obj, path extends string> = path extends keyof obj
 	? path extends 'SCOPE_FIRST_PART'
 		? 'scope-first-part'
-		: obj[path] extends readonly RedisKeysConfigTemplateArrayElements[]
+		: obj[path] extends readonly ValkeyKeysConfigTemplateArrayElements[]
 		? 'leaf'
 		: 'scope'
 	: 'not-key';

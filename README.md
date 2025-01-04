@@ -6,12 +6,12 @@ Create `Redis Key Templates`, which include parameters, using a nested config ob
 
 > This package heavily uses [Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) which is available since [TypeScript 4.1](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html) so you need at least this version of Typescript for this package to properly work.
 
-| ![npm](https://img.shields.io/npm/dm/create-redis-key?style=for-the-badge) | [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://choosealicense.com/licenses/mit/) | [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/alperguven) |
-| -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| ![npm](https://img.shields.io/npm/dm/valkeygen?style=for-the-badge) | [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://choosealicense.com/licenses/mit/) | [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/alperguven) |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## Examples
 
-[See it on action (StackBlitz)](https://stackblitz.com/edit/create-redis-key?file=src/index.ts&view=editor)
+[See it on action (StackBlitz)](https://stackblitz.com/edit/valkeygen?file=src/index.ts&view=editor)
 
 Check [How to Use](#usage) section to see explanations of usage options on examples.
 
@@ -33,10 +33,10 @@ Check [How to Use](#usage) section to see explanations of usage options on examp
 
 ## Installation
 
-Install [create-redis-key](https://www.npmjs.com/package/create-redis-key) with npm
+Install [valkeygen](https://www.npmjs.com/package/valkeygen) with npm
 
 ```bash
-  npm install create-redis-key
+  npm install valkeygen
 ```
 
 Type definitions? Included!
@@ -45,12 +45,12 @@ Type definitions? Included!
 
 Eventual purpose of this library is to create a `Redis Key` (which is basically a string) using a template which we call in this library a `Redis Key Template`.
 
-There is a function called `createRedisKey()` which takes a `Redis Key Template` and an object which includes values for the params in the `Redis Key Template`, then replaces parameters in template with the given values.
+There is a function called `createValkeyKey()` which takes a `Redis Key Template` and an object which includes values for the params in the `Redis Key Template`, then replaces parameters in template with the given values.
 
 Most basic usage is as follows:
 
 ```typescript
-const blogPostRK = createRedisKey('posts:%PostID%', {
+const blogPostRK = createValkeyKey('posts:%PostID%', {
 	PostID: '1',
 });
 ```
@@ -59,9 +59,9 @@ This creates a `string` which equals to `posts:1`
 
 There are 3 ways you can use this library.
 
-- Create a `Redis Key Templates Map` using `createRedisKeysMap()` to use it in conjunction with `createRedisKey()` to create Redis keys.
-- Create an object which has keys shaped as a `Redis Key Template` and use it in conjunction with `createRedisKey()` to create Redis keys.
-- Just use `createRedisKey()` function by writing your `Redis Key Template` as parameter to create a Redis key.
+- Create a `Redis Key Templates Map` using `createValkeyKeysMap()` to use it in conjunction with `createValkeyKey()` to create Redis keys.
+- Create an object which has keys shaped as a `Redis Key Template` and use it in conjunction with `createValkeyKey()` to create Redis keys.
+- Just use `createValkeyKey()` function by writing your `Redis Key Template` as parameter to create a Redis key.
 
 There are detailed explanations for each of them down below.
 
@@ -69,26 +69,22 @@ There are detailed explanations for each of them down below.
 
 There are 3 ways you can use this library. Examples for different options show how you can get the same output using different methods.
 
-> You will get parameter suggestions on your IDE based on the `Redis Key Template` you provided to `createRedisKey()` function.
+> You will get parameter suggestions on your IDE based on the `Redis Key Template` you provided to `createValkeyKey()` function.
 
 > All params on a `Redis Key Template` are required. You will get type errors if you don't provide all of them.
 
 First of all, import needed functions as follows:
 
 ```typescript
-import {
-	createRedisKeyParam,
-	createRedisKeysMap,
-	createRedisKey,
-} from 'create-redis-key';
+import { createValkeyKeyParam, createValkeyKeysMap, createValkeyKey } from 'valkeygen';
 ```
 
 or using require
 
 ```javascript
-var CRK = require('create-redis-key');
+var CRK = require('valkeygen');
 
-const { createRedisKeyParam, createRedisKeysMap, createRedisKey } = CRK;
+const { createValkeyKeyParam, createValkeyKeysMap, createValkeyKey } = CRK;
 ```
 
 ### Option 1 (Recommended)
@@ -105,20 +101,20 @@ const redisKeysConfig = {
 
 	restaurants: {
 		SCOPE_FIRST_PART: ['RESTAURANTS'],
-		byCategory: ['by-category', createRedisKeyParam('CategoryID')],
-		byCity: [createRedisKeyParam('CityID')],
+		byCategory: ['by-category', createValkeyKeyParam('CategoryID')],
+		byCity: [createValkeyKeyParam('CityID')],
 	},
 
 	categories: {
 		SCOPE_FIRST_PART: ['categories'],
-		byID: [createRedisKeyParam('CategoryID')],
+		byID: [createValkeyKeyParam('CategoryID')],
 	},
 
 	users: {
 		SCOPE_FIRST_PART: ['users'],
 		online: ['online'],
 		withActiveOrder: ['with-active-order'],
-		byID: ['by-id', createRedisKeyParam('UserID')],
+		byID: ['by-id', createValkeyKeyParam('UserID')],
 	},
 
 	couriers: {
@@ -126,17 +122,17 @@ const redisKeysConfig = {
 		Online: ['online'],
 		OnDelivery: ['on-delivery'],
 		byID: {
-			SCOPE_FIRST_PART: ['by-id', createRedisKeyParam('CourierID')],
+			SCOPE_FIRST_PART: ['by-id', createValkeyKeyParam('CourierID')],
 			PreviousDeliveries: ['previous-deliveries'],
 		},
 	},
 
 	orders: {
 		SCOPE_FIRST_PART: ['orders'],
-		byUser: ['of-user', createRedisKeyParam('UserID')],
+		byUser: ['of-user', createValkeyKeyParam('UserID')],
 		byCity: {
-			SCOPE_FIRST_PART: ['by-city', createRedisKeyParam('CityName')],
-			byCourier: ['of-courier', createRedisKeyParam('CourierID')],
+			SCOPE_FIRST_PART: ['by-city', createValkeyKeyParam('CityName')],
+			byCourier: ['of-courier', createValkeyKeyParam('CourierID')],
 		},
 	},
 } as const;
@@ -147,7 +143,7 @@ Then create a `Redis Keys Templates Map` using the config:
 > If you give an invalid config, return type will be `never`. I explained why it works this way at [FAQ](#faq) section.
 
 ```typescript
-const RedisKeysMap = createRedisKeysMap(exampleRedisKeysConfig);
+const ValkeyKeysMap = createValkeyKeysMap(exampleValkeyKeysConfig);
 ```
 
 It will create a `Redis Keys Templates Map`
@@ -188,12 +184,9 @@ You can then use this map to create a Redis key when needed:
 This will produce `couriers:by-id:1234:previous-deliveries`
 
 ```typescript
-const previousDeliveriesOfCourierRK = createRedisKey(
-	RedisKeysMap.couriers.byID.PreviousDeliveries,
-	{
-		CourierID: '1234',
-	}
-);
+const previousDeliveriesOfCourierRK = createValkeyKey(ValkeyKeysMap.couriers.byID.PreviousDeliveries, {
+	CourierID: '1234',
+});
 ```
 
 Create another key using map:
@@ -201,31 +194,27 @@ Create another key using map:
 This will produce `orders:by-city:istanbul:of-courier:1234`
 
 ```typescript
-const latestOrdersOfCourierInCityRK = createRedisKey(
-	RedisKeysMap.orders.byCity.byCourier,
-	{
-		CourierID: '1234',
-		CityName: 'istanbul',
-	}
-);
+const latestOrdersOfCourierInCityRK = createValkeyKey(ValkeyKeysMap.orders.byCity.byCourier, {
+	CourierID: '1234',
+	CityName: 'istanbul',
+});
 ```
 
 ### Option 2
 
-Instead of creating a `Redis Keys Templates Map` using `createRedisKeysMap()` with a config, you can write it yourself.
+Instead of creating a `Redis Keys Templates Map` using `createValkeyKeysMap()` with a config, you can write it yourself.
 
 > You should write `as const` at the end of the object for things to properly work.
 
 > When you write `Redis Key Templates` manually, be aware that it is much more error prone than using `Option 1`.
 
 ```typescript
-const DeliveryServiceRedisKeyTemplatesMap = {
+const DeliveryServiceValkeyKeyTemplatesMap = {
 	appStatus: 'app-status',
 	restaurantsByCategory: 'RESTAURANTS:by-category:%CategoryID%',
 	users: 'users:with-active-order',
 	previousDeliveriesOfCourier: 'couriers:by-id:%CourierID%:previous-deliveries',
-	latestOrdersOfCourierInCity:
-		'orders:by-city:%CityName%:of-courier:%CourierID%',
+	latestOrdersOfCourierInCity: 'orders:by-city:%CityName%:of-courier:%CourierID%',
 } as const;
 ```
 
@@ -234,13 +223,10 @@ Then you can use it just like shown on Option 1:
 This will produce `orders:by-city:istanbul:of-courier:1234`
 
 ```typescript
-const latestOrdersOfCourierInCityRK = createRedisKey(
-	DeliveryServiceRedisKeyTemplatesMap.latestOrdersOfCourierInCity,
-	{
-		CourierID: '1234',
-		CityName: 'istanbul',
-	}
-);
+const latestOrdersOfCourierInCityRK = createValkeyKey(DeliveryServiceValkeyKeyTemplatesMap.latestOrdersOfCourierInCity, {
+	CourierID: '1234',
+	CityName: 'istanbul',
+});
 ```
 
 ### Option 3
@@ -252,13 +238,10 @@ You can just write your `Redis Key Template` as a parameter:
 This will produce `orders:by-city:istanbul:of-courier:1234`
 
 ```typescript
-const latestOrdersOfCourierInCityRK = createRedisKey(
-	'orders:by-city:%CityName%:of-courier:%CourierID%',
-	{
-		CourierID: '1234',
-		CityName: 'istanbul',
-	}
-);
+const latestOrdersOfCourierInCityRK = createValkeyKey('orders:by-city:%CityName%:of-courier:%CourierID%', {
+	CourierID: '1234',
+	CityName: 'istanbul',
+});
 ```
 
 ## Documentation
@@ -288,7 +271,7 @@ Formats: `%ParamName%` | `random-text`
 An array of `Redis Key Part`
 
 ```typescript
-const exampleTemplateArray = ['key1', createRedisKeyParam('Param1')];
+const exampleTemplateArray = ['key1', createValkeyKeyParam('Param1')];
 ```
 
 #### Redis Keys Config Scope
@@ -302,12 +285,12 @@ Main building block of the a `Redis Keys Config`.
 const exampleScope = {
 	SCOPE_FIRST_PART: [],
 	key0: ['key0'],
-	key1: ['key1', createRedisKeyParam('Param1')],
-	key2: ['key2', createRedisKeyParam('Param2')],
+	key1: ['key1', createValkeyKeyParam('Param1')],
+	key2: ['key2', createValkeyKeyParam('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createRedisKeyParam('Param3')],
+		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
 		scopedKey1: ['a-key-1'],
-		scopedKey2: ['a-key-2', createRedisKeyParam('KeyParam')],
+		scopedKey2: ['a-key-2', createValkeyKeyParam('KeyParam')],
 	},
 };
 ```
@@ -319,31 +302,31 @@ A config object to create `Redis Keys Template Map`
 - This is actually a `Redis Keys Config Scope`
 
 ```typescript
-const exampleRedisKeysConfig = {
+const exampleValkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
-	key1: ['a-random-text-1', createRedisKeyParam('Param1')],
-	key2: ['another-text', createRedisKeyParam('Param2')],
+	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
+	key2: ['another-text', createValkeyKeyParam('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createRedisKeyParam('Param3')],
-		scopedKey1: ['a-key-1', createRedisKeyParam('KeyParam')],
+		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
+		scopedKey1: ['a-key-1', createValkeyKeyParam('KeyParam')],
 	},
 } as const;
 ```
 
 #### Redis Keys Template Map
 
-This is the product of `createRedisKeysMap()` function.
+This is the product of `createValkeyKeysMap()` function.
 
-Given the following config to `createRedisKeysMap()` function:
+Given the following config to `createValkeyKeysMap()` function:
 
 ```typescript
-const exampleRedisKeysConfig = {
+const exampleValkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
-	key1: ['a-random-text-1', createRedisKeyParam('Param1')],
-	key2: ['another-text', createRedisKeyParam('Param2')],
+	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
+	key2: ['another-text', createValkeyKeyParam('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createRedisKeyParam('Param3')],
-		scopedKey1: ['a-key-1', createRedisKeyParam('KeyParam')],
+		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
+		scopedKey1: ['a-key-1', createValkeyKeyParam('KeyParam')],
 	},
 } as const;
 ```
@@ -351,7 +334,7 @@ const exampleRedisKeysConfig = {
 When you use this config to create a map:
 
 ```typescript
-createRedisKeysMap(exampleRedisKeysConfig);
+createValkeyKeysMap(exampleValkeyKeysConfig);
 ```
 
 It will produce this object which is a `Redis Keys Template Map`:
@@ -366,35 +349,30 @@ It will produce this object which is a `Redis Keys Template Map`:
 }
 ```
 
-You can then use it with `createRedisKey()` to create Redis keys as needed.
+You can then use it with `createValkeyKey()` to create Redis keys as needed.
 
 ### Documentation - Functions
 
-#### createRedisKeyParam
+#### createValkeyKeyParam
 
-`createRedisKeyParam(paramName: string)`
+`createValkeyKeyParam(paramName: string)`
 
 Creates a `Redis Key Param` object.
 
 It can be used in a `Redis Keys Config Template Array` when creating `Redis Keys Config`
 
 ```typescript
-const exampleRedisKeysConfig = {
-	SCOPE_FIRST_PART: ['micro-service', createRedisKeyParam('ServiceID')],
-	key1: ['a-random-text-1', createRedisKeyParam('Param1')],
-	key2: [
-		'another-text',
-		createRedisKeyParam('Param2'),
-		'another-part',
-		createRedisKeyParam('Param3'),
-	],
+const exampleValkeyKeysConfig = {
+	SCOPE_FIRST_PART: ['micro-service', createValkeyKeyParam('ServiceID')],
+	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
+	key2: ['another-text', createValkeyKeyParam('Param2'), 'another-part', createValkeyKeyParam('Param3')],
 } as const;
 ```
 
-#### createRedisKeysMap
+#### createValkeyKeysMap
 
 ```typescript
-createRedisKeysMap(
+createValkeyKeysMap(
   redisKeysConfig: Record<string, any>,
   optionalDelimiter: string | null
 )
@@ -408,21 +386,21 @@ If you don't want to use a delimiter, give an empty string (`''`) to `optionalDe
 
 > For most cases (like 95% of them), you will use a delimiter. Therefore I chose the most commonly used one (colon `:`), which is also used in official Redis tutorials, as the default delimiter.
 
-> `redisKeysConfig` should be given as the example below. Otherwise you won't get suggestions on `createRedisKey()` and also Typescript will give an error when you try to provide parameter values.
+> `redisKeysConfig` should be given as the example below. Otherwise you won't get suggestions on `createValkeyKey()` and also Typescript will give an error when you try to provide parameter values.
 
-> `readonly RedisKeysConfig` does not work. Only way is to write `as const` at the end of the config object.
+> `readonly ValkeyKeysConfig` does not work. Only way is to write `as const` at the end of the config object.
 
 Given the config following config:
 
 ```typescript
 // a Redis Keys Config
-const exampleRedisKeysConfig = {
+const exampleValkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
-	key1: ['a-random-text-1', createRedisKeyParam('Param1')],
-	key2: ['another-text', createRedisKeyParam('Param2')],
+	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
+	key2: ['another-text', createValkeyKeyParam('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createRedisKeyParam('Param3')],
-		scopedKey1: ['a-key-1', createRedisKeyParam('KeyParam')],
+		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
+		scopedKey1: ['a-key-1', createValkeyKeyParam('KeyParam')],
 	},
 } as const;
 ```
@@ -430,7 +408,7 @@ const exampleRedisKeysConfig = {
 And called as follows:
 
 ```typescript
-const exampleRedisKeysTemplateMap = createRedisKeysMap(exampleRedisKeysConfig);
+const exampleValkeyKeysTemplateMap = createValkeyKeysMap(exampleValkeyKeysConfig);
 ```
 
 It will produce this object which is a `Redis Keys Template Map`:
@@ -445,10 +423,10 @@ It will produce this object which is a `Redis Keys Template Map`:
 }
 ```
 
-#### createRedisKey
+#### createValkeyKey
 
 ```typescript
-createRedisKey(
+createValkeyKey(
   redisKeyTemplateString: string,
   params: Record<string, string>
 ): string
@@ -457,22 +435,19 @@ createRedisKey(
 Creates a Redis key using a `Redis Key Template` and replacing parameters on template with given parameter values.
 
 ```typescript
-const blogPostCommentRepliesRK = createRedisKey(
-	'posts:%PostID%:comments:%CommentID%:replies',
-	{
-		PostID: '1234',
-		CommentID: '9876',
-	}
-);
+const blogPostCommentRepliesRK = createValkeyKey('posts:%PostID%:comments:%CommentID%:replies', {
+	PostID: '1234',
+	CommentID: '9876',
+});
 ```
 
 This creates a `string` which equals to `posts:1234:comments:9876:replies`
 
 ## FAQ
 
-#### When I give a config object to `createRedisKeysMap()` it's output type is `never`. Why?
+#### When I give a config object to `createValkeyKeysMap()` it's output type is `never`. Why?
 
-When you give an invalid config object to it, it returns `never` as a result type. Since I need your config as a readonly object, I can't make the parameter type `RedisKeysConfig` directly. So I need to accept an object, check if it is valid & make the return type `never` in order to make you aware that there is something wrong.
+When you give an invalid config object to it, it returns `never` as a result type. Since I need your config as a readonly object, I can't make the parameter type `ValkeyKeysConfig` directly. So I need to accept an object, check if it is valid & make the return type `never` in order to make you aware that there is something wrong.
 
 I now that it's a bad developer experience but I'm not sure if there is a way to solve this. Feel free to open an Issue to discuss this.
 

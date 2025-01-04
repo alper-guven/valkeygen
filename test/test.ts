@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { assert, expect } from 'chai';
 import {
-	createRedisKey,
-	createRedisKeyParam,
-	createRedisKeysMap,
-	RedisKeysConfig,
+	createValkeyKey,
+	createValkeyKeyParam,
+	createValkeyKeysMap,
+	ValkeyKeysConfig,
 } from '../src';
-import { IsReadonlyConfig } from '../src/types/create-redis-key/crk-redis-key-config';
+import { IsReadonlyConfig } from '../src/types/valkeygen/crk-redis-key-config';
 
 const redisKeysConfig = {
 	SCOPE_FIRST_PART: [],
@@ -15,20 +15,20 @@ const redisKeysConfig = {
 
 	restaurants: {
 		SCOPE_FIRST_PART: ['RESTAURANTS'],
-		byCategory: ['by-category', createRedisKeyParam('CategoryID')],
-		byCity: [createRedisKeyParam('CityID')],
+		byCategory: ['by-category', createValkeyKeyParam('CategoryID')],
+		byCity: [createValkeyKeyParam('CityID')],
 	},
 
 	categories: {
 		SCOPE_FIRST_PART: ['categories'],
-		byID: [createRedisKeyParam('CategoryID')],
+		byID: [createValkeyKeyParam('CategoryID')],
 	},
 
 	users: {
 		SCOPE_FIRST_PART: ['users'],
 		online: ['online'],
 		withActiveOrder: ['with-active-order'],
-		byID: ['by-id', createRedisKeyParam('UserID')],
+		byID: ['by-id', createValkeyKeyParam('UserID')],
 	},
 
 	couriers: {
@@ -36,17 +36,17 @@ const redisKeysConfig = {
 		Online: ['online'],
 		OnDelivery: ['on-delivery'],
 		byID: {
-			SCOPE_FIRST_PART: ['by-id', createRedisKeyParam('CourierID')],
+			SCOPE_FIRST_PART: ['by-id', createValkeyKeyParam('CourierID')],
 			PreviousDeliveries: ['previous-deliveries'],
 		},
 	},
 
 	orders: {
 		SCOPE_FIRST_PART: ['orders'],
-		byUser: ['of-user', createRedisKeyParam('UserID')],
+		byUser: ['of-user', createValkeyKeyParam('UserID')],
 		byCity: {
-			SCOPE_FIRST_PART: ['by-city', createRedisKeyParam('CityName')],
-			byCourier: ['of-courier', createRedisKeyParam('CourierID')],
+			SCOPE_FIRST_PART: ['by-city', createValkeyKeyParam('CityName')],
+			byCourier: ['of-courier', createValkeyKeyParam('CourierID')],
 		},
 	},
 } as const;
@@ -70,7 +70,7 @@ type YesOrNo<T, K extends 'yes' extends T ? 'yes' : 'no'> = 'x';
 // 	},
 // } as const;
 // type isReadonly_1 = YesOrNo<IsReadonlyConfig<typeof customObj>, 'yes'>;
-// const map1 = createRedisKeysMap(customObj);
+// const map1 = createValkeyKeysMap(customObj);
 // type isValidCFG_1 = IsNever<typeof map1, false>;
 
 // // ? Valid config but is not readonly (so it's not valid for the map)
@@ -79,7 +79,7 @@ type YesOrNo<T, K extends 'yes' extends T ? 'yes' : 'no'> = 'x';
 // 	qwelxqwe: 'qweqwe',
 // };
 // type isReadonly_2 = YesOrNo<IsReadonlyConfig<typeof customObj2>, 'no'>;
-// const map2 = createRedisKeysMap(customObj2);
+// const map2 = createValkeyKeysMap(customObj2);
 // type isValidCFG_2 = IsNever<typeof map2, true>;
 
 // // ? Invalid config (so it's not valid for the map)
@@ -87,22 +87,22 @@ type YesOrNo<T, K extends 'yes' extends T ? 'yes' : 'no'> = 'x';
 // 	ajkdjkasjkd: 'asdasd',
 // };
 // type isReadonly_3 = YesOrNo<IsReadonlyConfig<typeof customObj3>, 'no'>;
-// const map3 = createRedisKeysMap(customObj3);
+// const map3 = createValkeyKeysMap(customObj3);
 // type isValidCFG_3 = IsNever<typeof map3, true>;
 
 describe('Create Redis Key', function () {
 	describe('Only Key Creator', function () {
 		it('should return empty string', function () {
-			assert.equal(createRedisKey('', null), '');
+			assert.equal(createValkeyKey('', null), '');
 		});
 
 		it('should return test', function () {
-			assert.equal(createRedisKey('test', null), 'test');
+			assert.equal(createValkeyKey('test', null), 'test');
 		});
 
 		it('should return my:redis:key:1234', function () {
 			assert.equal(
-				createRedisKey('my:redis:key:%KeyID%', {
+				createValkeyKey('my:redis:key:%KeyID%', {
 					KeyID: '1234',
 				}),
 				'my:redis:key:1234'
@@ -111,7 +111,7 @@ describe('Create Redis Key', function () {
 
 		it('should throw error when an empty string given as param value', function () {
 			expect(() =>
-				createRedisKey('my:redis:key:%KeyID%', {
+				createValkeyKey('my:redis:key:%KeyID%', {
 					KeyID: '',
 				})
 			).to.throw(
@@ -122,20 +122,20 @@ describe('Create Redis Key', function () {
 
 	describe('Redis Keys Templates Map Creation', function () {
 		it('should throw error when given an empty string as delimiter', function () {
-			expect(() => createRedisKeysMap(redisKeysConfig, '')).to.throw(
+			expect(() => createValkeyKeysMap(redisKeysConfig, '')).to.throw(
 				'Delimiter cannot be empty string'
 			);
 		});
 
 		it('should throw error when given % as delimiter', function () {
-			expect(() => createRedisKeysMap(redisKeysConfig, '%')).to.throw(
+			expect(() => createValkeyKeysMap(redisKeysConfig, '%')).to.throw(
 				'Invalid delimiter. Delimiter cannot be "%". This is used for params in Redis Key templates.'
 			);
 		});
 
 		it('should throw error when given a non string param value as delimiter', function () {
 			// @ts-expect-error : Testing invalid input
-			expect(() => createRedisKeysMap(redisKeysConfig, 1)).to.throw(
+			expect(() => createValkeyKeysMap(redisKeysConfig, 1)).to.throw(
 				'Delimiter must be a string'
 			);
 		});
@@ -149,7 +149,7 @@ describe('Create Redis Key', function () {
 			};
 
 			expect(() => {
-				const testRandomObject = createRedisKeysMap(randomObject);
+				const testRandomObject = createValkeyKeysMap(randomObject);
 			}).to.throw('Redis Key Config is not valid');
 		});
 
@@ -160,7 +160,7 @@ describe('Create Redis Key', function () {
 			};
 
 			expect(() => {
-				const testRandomObject = createRedisKeysMap(randomObject);
+				const testRandomObject = createValkeyKeysMap(randomObject);
 			}).to.throw(
 				'Redis Key Config is not valid: Config Object itself is not a valid Redis Key Scope'
 			);
@@ -174,7 +174,7 @@ describe('Create Redis Key', function () {
 			};
 
 			expect(() => {
-				const testRandomObject = createRedisKeysMap(randomObject);
+				const testRandomObject = createValkeyKeysMap(randomObject);
 			}).to.throw(
 				'Redis Key Config is not valid: Redis Template Array must be an array of strings or Redis Key Param objects'
 			);
@@ -182,15 +182,15 @@ describe('Create Redis Key', function () {
 	});
 
 	describe('Use Valid Config to Create Key (Without Optional Delimiter)', function () {
-		const redisKeysMap = createRedisKeysMap(redisKeysConfig);
+		const redisKeysMap = createValkeyKeysMap(redisKeysConfig);
 
 		it('should return key app-status', function () {
-			assert.equal(createRedisKey(redisKeysMap.appStatus, null), 'app-status');
+			assert.equal(createValkeyKey(redisKeysMap.appStatus, null), 'app-status');
 		});
 
 		it('should return key for restaurants by category', function () {
 			assert.equal(
-				createRedisKey(redisKeysMap.restaurants.byCategory, {
+				createValkeyKey(redisKeysMap.restaurants.byCategory, {
 					CategoryID: '1234',
 				}),
 				'RESTAURANTS:by-category:1234'
@@ -199,7 +199,7 @@ describe('Create Redis Key', function () {
 
 		it('should return key for restaurants by city', function () {
 			assert.equal(
-				createRedisKey(redisKeysMap.restaurants.byCity, {
+				createValkeyKey(redisKeysMap.restaurants.byCity, {
 					CityID: '1234',
 				}),
 				'RESTAURANTS:1234'
@@ -209,7 +209,7 @@ describe('Create Redis Key', function () {
 		// previous deliveries of courier with id 1234
 		it('should return key for previous deliveries of courier with id 1234', function () {
 			assert.equal(
-				createRedisKey(redisKeysMap.couriers.byID.PreviousDeliveries, {
+				createValkeyKey(redisKeysMap.couriers.byID.PreviousDeliveries, {
 					CourierID: '1234',
 				}),
 				'couriers:by-id:1234:previous-deliveries'
@@ -219,7 +219,7 @@ describe('Create Redis Key', function () {
 		// orders of user with id 1234
 		it('should NOT return key for orders of user with id 1234', function () {
 			assert.notEqual(
-				createRedisKey(redisKeysMap.orders.byUser, {
+				createValkeyKey(redisKeysMap.orders.byUser, {
 					UserID: '1234',
 				}),
 				'orders:of-user:'
@@ -229,13 +229,13 @@ describe('Create Redis Key', function () {
 
 	describe('Use Valid Config to Create Key (With Optional Delimiter)', function () {
 		it('should return key for restaurants by category with given delimiter (.)', function () {
-			const redisKeysMap_WithCustomDelimiter = createRedisKeysMap(
+			const redisKeysMap_WithCustomDelimiter = createValkeyKeysMap(
 				redisKeysConfig,
 				'.'
 			);
 
 			assert.equal(
-				createRedisKey(
+				createValkeyKey(
 					redisKeysMap_WithCustomDelimiter.restaurants.byCategory,
 					{
 						CategoryID: '1234',

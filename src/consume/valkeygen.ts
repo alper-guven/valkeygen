@@ -1,5 +1,5 @@
 import { isParamValueValid } from './validators';
-import { getRequiredParamsFromTemplateString } from '../types/create-redis-key/crk-consumers';
+import { getRequiredParamsFromTemplateString } from '../types/valkeygen/crk-consumers';
 
 const findParamNamesInTemplateString = (templateString: string): string[] => {
 	const paramNames: string[] = [];
@@ -28,7 +28,7 @@ const findParamNamesInTemplateString = (templateString: string): string[] => {
 
 // Create a template string from a template array
 
-export function createRedisKey<T extends string>(
+export function createValkeyKey<T extends string>(
 	redisKeyTemplateString: T,
 	params: getRequiredParamsFromTemplateString<T>
 ): string {

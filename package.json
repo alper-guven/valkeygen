@@ -1,5 +1,5 @@
 {
-  "name": "create-redis-key",
+  "name": "valkeygen",
   "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
@@ -20,12 +20,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alper-guven/create-redis-key.git"
+    "url": "git+https://github.com/alper-guven/valkeygen.git"
   },
   "author": "Alper Güven <alper.guven.11@gmail.com> (https://alper.codes/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alper-guven/create-redis-key/issues"
+    "url": "https://github.com/alper-guven/valkeygen/issues"
   },
   "keywords": [
     "redis",
@@ -35,7 +35,7 @@
     "create redis key",
     "create redis keys"
   ],
-  "homepage": "https://github.com/alper-guven/create-redis-key#readme",
+  "homepage": "https://github.com/alper-guven/valkeygen#readme",
   "devDependencies": {
     "@types/chai": "^4.3.3",
     "@types/expect": "^24.3.0",

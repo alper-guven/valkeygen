@@ -1,13 +1,13 @@
 import {
-	RedisKeysConfigParam,
-	RedisKeysConfigScope,
-	RedisKeysConfigTemplateArray,
+	ValkeyKeysConfigParam,
+	ValkeyKeysConfigScope,
+	ValkeyKeysConfigTemplateArray,
 	ScopeOrKeyTemplate,
-} from '../types/create-redis-key/crk-redis-key-config';
+} from '../types/valkeygen/crk-redis-key-config';
 
-export const isRedisKeyParam = (
-	templateMember: string | RedisKeysConfigParam
-): templateMember is RedisKeysConfigParam => {
+export const isValkeyKeyParam = (
+	templateMember: string | ValkeyKeysConfigParam
+): templateMember is ValkeyKeysConfigParam => {
 	if (typeof templateMember === 'object' && templateMember.name) {
 		return true;
 	}
@@ -19,22 +19,22 @@ export const isRedisKeyParam = (
 	return false;
 };
 
-export const isRedisKeyTemplate = (
+export const isValkeyKeyTemplate = (
 	possibleTemplate: ScopeOrKeyTemplate
-): possibleTemplate is RedisKeysConfigTemplateArray => {
+): possibleTemplate is ValkeyKeysConfigTemplateArray => {
 	return (
 		Array.isArray(possibleTemplate) &&
 		possibleTemplate.every(
 			(templateMember) =>
-				isRedisKeyParam(templateMember) || typeof templateMember === 'string'
+				isValkeyKeyParam(templateMember) || typeof templateMember === 'string'
 		)
 	);
 };
 
-export const validateRedisKeyTemplate = (
+export const validateValkeyKeyTemplate = (
 	possibleTemplate: ScopeOrKeyTemplate
 ): void => {
-	if (isRedisKeyTemplate(possibleTemplate) === false) {
+	if (isValkeyKeyTemplate(possibleTemplate) === false) {
 		throw new Error(
 			`Redis Template Array must be an array of strings or Redis Key Param objects`
 		);
@@ -43,7 +43,7 @@ export const validateRedisKeyTemplate = (
 
 export const isScopeLike = (
 	possibleScope: unknown
-): possibleScope is RedisKeysConfigScope => {
+): possibleScope is ValkeyKeysConfigScope => {
 	return (
 		possibleScope != null &&
 		typeof possibleScope === 'object' &&
@@ -51,15 +51,17 @@ export const isScopeLike = (
 	);
 };
 
-export const isValidScope = (scope: unknown): scope is RedisKeysConfigScope => {
+export const isValidScope = (
+	scope: unknown
+): scope is ValkeyKeysConfigScope => {
 	if (isScopeLike(scope)) {
 		for (const [key, value] of Object.entries(scope)) {
 			if (key === 'SCOPE_FIRST_PART') {
-				if (isRedisKeyTemplate(value) === false) {
+				if (isValkeyKeyTemplate(value) === false) {
 					return false;
 				}
 			} else if (Array.isArray(value)) {
-				if (isRedisKeyTemplate(value)) {
+				if (isValkeyKeyTemplate(value)) {
 					continue;
 				} else {
 					return false;
@@ -92,9 +94,9 @@ export const validateScope = (
 				const keyPath = parentPath ? `${parentPath}.${key}` : '';
 
 				if (key === 'SCOPE_FIRST_PART') {
-					validateRedisKeyTemplate(value);
+					validateValkeyKeyTemplate(value);
 				} else if (Array.isArray(value)) {
-					validateRedisKeyTemplate(value);
+					validateValkeyKeyTemplate(value);
 				} else if (isScopeLike(value)) {
 					validateScope(value, keyPath);
 				} else {
@@ -120,7 +122,7 @@ export const validateScope = (
 	}
 };
 
-export const validateRedisKeyConfig = (redisKeyConfig: unknown): void => {
+export const validateValkeyKeyConfig = (redisKeyConfig: unknown): void => {
 	try {
 		validateScope(redisKeyConfig, null);
 	} catch (error) {
