@@ -4,13 +4,10 @@ export {
 	ValkeyKeysConfigScope,
 	ValkeyKeysConfigTemplateArray,
 	ValkeyKeysConfig,
-} from './types/valkeygen/crk-redis-key-config';
+} from './types/valkeygen/key-config';
 
 // * Export Configure Functions
-export {
-	createValkeyKeyParam,
-	createValkeyKeysMap,
-} from './configure/valkeygen-map';
+export { createValkeyKeyParam, createValkeyKeysMap } from './configure/mapper';
 
 // * Export Consuming Functions
 export { createValkeyKey } from './consume/valkeygen';

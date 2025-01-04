@@ -3,7 +3,7 @@ import {
 	ValkeyKeysConfigScope,
 	ValkeyKeysConfigTemplateArray,
 	ScopeOrKeyTemplate,
-} from '../types/valkeygen/crk-redis-key-config';
+} from '../types/valkeygen/key-config';
 
 export const isValkeyKeyParam = (
 	templateMember: string | ValkeyKeysConfigParam

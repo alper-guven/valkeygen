@@ -6,7 +6,7 @@ import {
 	createValkeyKeysMap,
 	ValkeyKeysConfig,
 } from '../src';
-import { IsReadonlyConfig } from '../src/types/valkeygen/crk-redis-key-config';
+import { IsReadonlyConfig } from '../src/types/valkeygen/key-config';
 
 const redisKeysConfig = {
 	SCOPE_FIRST_PART: [],

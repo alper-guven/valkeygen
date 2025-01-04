@@ -1,4 +1,4 @@
-import { ScopeToKeys } from '../types/valkeygen/crk-config-mapper';
+import { ScopeToKeys } from '../types/valkeygen/config-mapper';
 import {
 	IsReadonlyConfig,
 	IsValidValkeyKeysConfig2,
@@ -6,7 +6,7 @@ import {
 	ValkeyKeysConfigScope,
 	ValkeyKeysConfigTemplateArray,
 	ValkeyKeyTemplatesMapScope,
-} from '../types/valkeygen/crk-redis-key-config';
+} from '../types/valkeygen/key-config';
 import {
 	isValkeyKeyParam,
 	validateValkeyKeyTemplate,

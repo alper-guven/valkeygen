@@ -9,7 +9,7 @@ import {
 import {
 	ValkeyKeysConfigTemplateArrayElements,
 	ValkeyKeysConfigParam,
-} from './crk-redis-key-config';
+} from './key-config';
 
 /**
  * ! CAUTION:
