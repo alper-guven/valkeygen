@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-mixed-spaces-and-tabs */
 import { DeepMutable } from './util/object-utils';
 
 // * Template array elements

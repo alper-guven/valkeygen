@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 export type Path_GetFirstPart<T> = T extends `${infer First}.${infer Rest}`

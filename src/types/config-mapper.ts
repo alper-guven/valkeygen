@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-mixed-spaces-and-tabs */
 import {
 	Path_GetFirstPart,
 	Path_GetRest,
