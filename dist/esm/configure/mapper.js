@@ -1,21 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createRedisKeysMap = exports.createRedisKeyParam = void 0;
-const validators_1 = require("./validators");
-const createRedisKeyParam = (name) => {
-    return {
-        name,
-    };
-};
-exports.createRedisKeyParam = createRedisKeyParam;
+import { isValkeyKeyParam, validateValkeyKeyTemplate, isScopeLike, validateDelimiter, validateValkeyKeyConfig, } from './validators.js';
 const createTemplateStringFormTemplateArray = (templateArray, delimiter) => {
-    (0, validators_1.validateRedisKeyTemplate)(templateArray);
+    validateValkeyKeyTemplate(templateArray);
     if (templateArray.length === 0) {
         return null;
     }
     const templateString = templateArray
         .map((templateMember) => {
-        if ((0, validators_1.isRedisKeyParam)(templateMember)) {
+        if (isValkeyKeyParam(templateMember)) {
             return `%${templateMember.name}%`;
         }
         return templateMember;
@@ -24,7 +15,7 @@ const createTemplateStringFormTemplateArray = (templateArray, delimiter) => {
     return templateString;
 };
 const createTemplateLeaf = (parentTemplateString, leafKeyTemplateArray, delimiter) => {
-    (0, validators_1.validateRedisKeyTemplate)(leafKeyTemplateArray);
+    validateValkeyKeyTemplate(leafKeyTemplateArray);
     const templateString = createTemplateStringFormTemplateArray(leafKeyTemplateArray, delimiter);
     if (parentTemplateString != null && parentTemplateString.length > 0) {
         return [parentTemplateString, templateString].join(delimiter);
@@ -45,25 +36,26 @@ const createTemplateScope = (parentTemplateString, scope, delimiter) => {
         else {
             templateString = scopeFirstPartString;
         }
+        // is leaf
         if (Array.isArray(value)) {
             scopeTemplate[key] =
                 createTemplateLeaf(templateString, value, delimiter) ||
                     parentTemplateString ||
                     '';
         }
-        else if ((0, validators_1.isScopeLike)(value)) {
+        else if (isScopeLike(value)) {
+            // is scope
             scopeTemplate[key] = createTemplateScope(templateString, value, delimiter);
         }
     }
     return scopeTemplate;
 };
-const createRedisKeysMap = (redisKeysConfig, optionalDelimiter) => {
+export const createValkeyKeysMap = (valkeyKeysConfig, optionalDelimiter) => {
     if (optionalDelimiter != null) {
-        (0, validators_1.validateDelimiter)(optionalDelimiter);
+        validateDelimiter(optionalDelimiter);
     }
     const delimiter = optionalDelimiter || ':';
-    (0, validators_1.validateRedisKeyConfig)(redisKeysConfig);
-    const map = createTemplateScope(null, redisKeysConfig, delimiter);
+    validateValkeyKeyConfig(valkeyKeysConfig);
+    const map = createTemplateScope(null, valkeyKeysConfig, delimiter);
     return map;
 };
-exports.createRedisKeysMap = createRedisKeysMap;
