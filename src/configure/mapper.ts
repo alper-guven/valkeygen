@@ -1,18 +1,18 @@
-import { ScopeToKeys } from '../types/config-mapper';
+import { ScopeToKeys } from '../types/config-mapper.js';
 import {
 	IsReadonlyConfig,
 	IsValidValkeygenConfig2,
 	ValkeygenConfigScope,
 	ValkeygenConfigTemplateArray,
 	ValkeyKeyTemplatesMapScope,
-} from '../types/key-config';
+} from '../types/key-config.js';
 import {
 	isValkeyKeyParam,
 	validateValkeyKeyTemplate,
 	isScopeLike,
 	validateDelimiter,
 	validateValkeyKeyConfig,
-} from './validators';
+} from './validators.js';
 
 const createTemplateStringFormTemplateArray = (
 	templateArray: ValkeygenConfigTemplateArray,

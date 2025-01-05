@@ -1,5 +1,5 @@
-import { isParamValueValid } from './validators';
-import { getRequiredParamsFromTemplateString } from '../types/consumers';
+import { isParamValueValid } from './validators.js';
+import { getRequiredParamsFromTemplateString } from '../types/consumers.js';
 
 const findParamNamesInTemplateString = (templateString: string): string[] => {
 	const paramNames: string[] = [];
