@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { assert, expect } from 'chai';
+import { describe, it } from 'mocha';
 import {
 	createValkeyKey,
 	createValkeyKeyParam,
 	createValkeyKeysMap,
 	ValkeygenConfig,
-} from '../src';
-import { IsReadonlyConfig } from '../src/types/key-config';
+} from '../src/index.js';
+import { IsReadonlyConfig } from '../src/types/key-config.js';
 
 const valkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
