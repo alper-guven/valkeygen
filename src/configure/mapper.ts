@@ -2,6 +2,7 @@ import { ScopeToKeys } from '../types/config-mapper.js';
 import {
 	IsReadonlyConfig,
 	IsValidValkeygenConfig2,
+	ValkeygenConfig,
 	ValkeygenConfigScope,
 	ValkeygenConfigTemplateArray,
 	ValkeyKeyTemplatesMapScope,
@@ -104,7 +105,7 @@ const createTemplateScope = (
 
 export const createValkeyKeysMap = <
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	T extends Record<string, any>,
+	const T extends ValkeygenConfig,
 	Delimiter extends string = ':',
 	K = IsValidValkeygenConfig2<T> extends true ? 'valid' : 'invalid',
 	ReturnValue = 'valid' extends K

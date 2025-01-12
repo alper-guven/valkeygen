@@ -73,3 +73,14 @@ typings/
 .env.test
 
 .vscode
+
+# ignore playground which is used for testing
+src/playground.ts
+# esm
+dist/esm/playground.js
+dist/esm/playground.js.map
+dist/esm/playground.d.ts
+# cjs
+dist/cjs/playground.js
+dist/cjs/playground.js.map
+dist/cjs/playground.d.ts
