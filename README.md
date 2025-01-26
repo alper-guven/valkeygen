@@ -47,12 +47,12 @@ Type definitions? Included!
 
 Eventual purpose of this library is to create a `Valkey Key` (which is basically a string) using a template which we call in this library a `Valkey Key Template`.
 
-There is a function called `createValkeyKey()` which takes a `Valkey Key Template` and an object which includes values for the params in the `Valkey Key Template`, then replaces parameters in template with the given values.
+There is a function called `generateKey()` which takes a `Valkey Key Template` and an object which includes values for the params in the `Valkey Key Template`, then replaces parameters in template with the given values.
 
 Most basic usage is as follows:
 
 ```typescript
-const blogPostRK = createValkeyKey('posts:%PostID%', {
+const blogPostRK = generateKey('posts:%PostID%', {
 	PostID: '1',
 });
 ```
@@ -61,9 +61,9 @@ This creates a `string` which equals to `posts:1`
 
 There are 3 ways you can use this library.
 
-- Create a `Valkey Key Templates Map` using `createValkeyKeysMap()` to use it in conjunction with `createValkeyKey()` to create Valkey keys.
-- Create an object which has keys shaped as a `Valkey Key Template` and use it in conjunction with `createValkeyKey()` to create Valkey keys.
-- Just use `createValkeyKey()` function by writing your `Valkey Key Template` as parameter to create a Valkey key.
+- Create a `Valkey Key Templates Map` using `createKeysMapping()` to use it in conjunction with `generateKey()` to create Valkey keys.
+- Create an object which has keys shaped as a `Valkey Key Template` and use it in conjunction with `generateKey()` to create Valkey keys.
+- Just use `generateKey()` function by writing your `Valkey Key Template` as parameter to create a Valkey key.
 
 There are detailed explanations for each of them down below.
 
@@ -71,14 +71,14 @@ There are detailed explanations for each of them down below.
 
 There are 3 ways you can use this library. Examples for different options show how you can get the same output using different methods.
 
-> You will get parameter suggestions on your IDE based on the `Valkey Key Template` you provided to `createValkeyKey()` function.
+> You will get parameter suggestions on your IDE based on the `Valkey Key Template` you provided to `generateKey()` function.
 
 > All params on a `Valkey Key Template` are required. You will get type errors if you don't provide all of them.
 
 First of all, import needed functions as follows:
 
 ```typescript
-import { createValkeyKeyParam, createValkeyKeysMap, createValkeyKey } from 'valkeygen';
+import { defineKeyParameter, createKeysMapping, generateKey } from 'valkeygen';
 ```
 
 or using require
@@ -86,7 +86,7 @@ or using require
 ```javascript
 var CRK = require('valkeygen');
 
-const { createValkeyKeyParam, createValkeyKeysMap, createValkeyKey } = CRK;
+const { defineKeyParameter, createKeysMapping, generateKey } = CRK;
 ```
 
 ### Option 1 (Recommended)
@@ -103,20 +103,20 @@ const valkeyKeysConfig = {
 
 	restaurants: {
 		SCOPE_FIRST_PART: ['RESTAURANTS'],
-		byCategory: ['by-category', createValkeyKeyParam('CategoryID')],
-		byCity: [createValkeyKeyParam('CityID')],
+		byCategory: ['by-category', defineKeyParameter('CategoryID')],
+		byCity: [defineKeyParameter('CityID')],
 	},
 
 	categories: {
 		SCOPE_FIRST_PART: ['categories'],
-		byID: [createValkeyKeyParam('CategoryID')],
+		byID: [defineKeyParameter('CategoryID')],
 	},
 
 	users: {
 		SCOPE_FIRST_PART: ['users'],
 		online: ['online'],
 		withActiveOrder: ['with-active-order'],
-		byID: ['by-id', createValkeyKeyParam('UserID')],
+		byID: ['by-id', defineKeyParameter('UserID')],
 	},
 
 	couriers: {
@@ -124,17 +124,17 @@ const valkeyKeysConfig = {
 		Online: ['online'],
 		OnDelivery: ['on-delivery'],
 		byID: {
-			SCOPE_FIRST_PART: ['by-id', createValkeyKeyParam('CourierID')],
+			SCOPE_FIRST_PART: ['by-id', defineKeyParameter('CourierID')],
 			PreviousDeliveries: ['previous-deliveries'],
 		},
 	},
 
 	orders: {
 		SCOPE_FIRST_PART: ['orders'],
-		byUser: ['of-user', createValkeyKeyParam('UserID')],
+		byUser: ['of-user', defineKeyParameter('UserID')],
 		byCity: {
-			SCOPE_FIRST_PART: ['by-city', createValkeyKeyParam('CityName')],
-			byCourier: ['of-courier', createValkeyKeyParam('CourierID')],
+			SCOPE_FIRST_PART: ['by-city', defineKeyParameter('CityName')],
+			byCourier: ['of-courier', defineKeyParameter('CourierID')],
 		},
 	},
 } as const;
@@ -145,7 +145,7 @@ Then create a `Valkey Keys Templates Map` using the config:
 > If you give an invalid config, return type will be `never`. I explained why it works this way at [FAQ](#faq) section.
 
 ```typescript
-const ValkeyKeysMap = createValkeyKeysMap(exampleValkeyKeysConfig);
+const ValkeyKeysMap = createKeysMapping(exampleValkeyKeysConfig);
 ```
 
 It will create a `Valkey Keys Templates Map`
@@ -186,7 +186,7 @@ You can then use this map to create a Valkey key when needed:
 This will produce `couriers:by-id:1234:previous-deliveries`
 
 ```typescript
-const previousDeliveriesOfCourierRK = createValkeyKey(ValkeyKeysMap.couriers.byID.PreviousDeliveries, {
+const previousDeliveriesOfCourierRK = generateKey(ValkeyKeysMap.couriers.byID.PreviousDeliveries, {
 	CourierID: '1234',
 });
 ```
@@ -196,7 +196,7 @@ Create another key using map:
 This will produce `orders:by-city:istanbul:of-courier:1234`
 
 ```typescript
-const latestOrdersOfCourierInCityRK = createValkeyKey(ValkeyKeysMap.orders.byCity.byCourier, {
+const latestOrdersOfCourierInCityRK = generateKey(ValkeyKeysMap.orders.byCity.byCourier, {
 	CourierID: '1234',
 	CityName: 'istanbul',
 });
@@ -204,7 +204,7 @@ const latestOrdersOfCourierInCityRK = createValkeyKey(ValkeyKeysMap.orders.byCit
 
 ### Option 2
 
-Instead of creating a `Valkey Keys Templates Map` using `createValkeyKeysMap()` with a config, you can write it yourself.
+Instead of creating a `Valkey Keys Templates Map` using `createKeysMapping()` with a config, you can write it yourself.
 
 > You should write `as const` at the end of the object for things to properly work.
 
@@ -225,7 +225,7 @@ Then you can use it just like shown on Option 1:
 This will produce `orders:by-city:istanbul:of-courier:1234`
 
 ```typescript
-const latestOrdersOfCourierInCityRK = createValkeyKey(DeliveryServiceValkeyKeyTemplatesMap.latestOrdersOfCourierInCity, {
+const latestOrdersOfCourierInCityRK = generateKey(DeliveryServiceValkeyKeyTemplatesMap.latestOrdersOfCourierInCity, {
 	CourierID: '1234',
 	CityName: 'istanbul',
 });
@@ -240,7 +240,7 @@ You can just write your `Valkey Key Template` as a parameter:
 This will produce `orders:by-city:istanbul:of-courier:1234`
 
 ```typescript
-const latestOrdersOfCourierInCityRK = createValkeyKey('orders:by-city:%CityName%:of-courier:%CourierID%', {
+const latestOrdersOfCourierInCityRK = generateKey('orders:by-city:%CityName%:of-courier:%CourierID%', {
 	CourierID: '1234',
 	CityName: 'istanbul',
 });
@@ -273,7 +273,7 @@ Formats: `%ParamName%` | `random-text`
 An array of `Valkey Key Part`
 
 ```typescript
-const exampleTemplateArray = ['key1', createValkeyKeyParam('Param1')];
+const exampleTemplateArray = ['key1', defineKeyParameter('Param1')];
 ```
 
 #### Valkey Keys Config Scope
@@ -287,12 +287,12 @@ Main building block of the a `Valkey Keys Config`.
 const exampleScope = {
 	SCOPE_FIRST_PART: [],
 	key0: ['key0'],
-	key1: ['key1', createValkeyKeyParam('Param1')],
-	key2: ['key2', createValkeyKeyParam('Param2')],
+	key1: ['key1', defineKeyParameter('Param1')],
+	key2: ['key2', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
+		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
 		scopedKey1: ['a-key-1'],
-		scopedKey2: ['a-key-2', createValkeyKeyParam('KeyParam')],
+		scopedKey2: ['a-key-2', defineKeyParameter('KeyParam')],
 	},
 };
 ```
@@ -306,29 +306,29 @@ A config object to create `Valkey Keys Template Map`
 ```typescript
 const exampleValkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
-	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
-	key2: ['another-text', createValkeyKeyParam('Param2')],
+	key1: ['a-random-text-1', defineKeyParameter('Param1')],
+	key2: ['another-text', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
-		scopedKey1: ['a-key-1', createValkeyKeyParam('KeyParam')],
+		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
+		scopedKey1: ['a-key-1', defineKeyParameter('KeyParam')],
 	},
 } as const;
 ```
 
 #### Valkey Keys Template Map
 
-This is the product of `createValkeyKeysMap()` function.
+This is the product of `createKeysMapping()` function.
 
-Given the following config to `createValkeyKeysMap()` function:
+Given the following config to `createKeysMapping()` function:
 
 ```typescript
 const exampleValkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
-	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
-	key2: ['another-text', createValkeyKeyParam('Param2')],
+	key1: ['a-random-text-1', defineKeyParameter('Param1')],
+	key2: ['another-text', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
-		scopedKey1: ['a-key-1', createValkeyKeyParam('KeyParam')],
+		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
+		scopedKey1: ['a-key-1', defineKeyParameter('KeyParam')],
 	},
 } as const;
 ```
@@ -336,7 +336,7 @@ const exampleValkeyKeysConfig = {
 When you use this config to create a map:
 
 ```typescript
-createValkeyKeysMap(exampleValkeyKeysConfig);
+createKeysMapping(exampleValkeyKeysConfig);
 ```
 
 It will produce this object which is a `Valkey Keys Template Map`:
@@ -351,13 +351,13 @@ It will produce this object which is a `Valkey Keys Template Map`:
 }
 ```
 
-You can then use it with `createValkeyKey()` to create Valkey keys as needed.
+You can then use it with `generateKey()` to create Valkey keys as needed.
 
 ### Documentation - Functions
 
-#### createValkeyKeyParam
+#### defineKeyParameter
 
-`createValkeyKeyParam(paramName: string)`
+`defineKeyParameter(paramName: string)`
 
 Creates a `Valkey Key Param` object.
 
@@ -365,16 +365,16 @@ It can be used in a `Valkey Keys Config Template Array` when creating `Valkey Ke
 
 ```typescript
 const exampleValkeyKeysConfig = {
-	SCOPE_FIRST_PART: ['micro-service', createValkeyKeyParam('ServiceID')],
-	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
-	key2: ['another-text', createValkeyKeyParam('Param2'), 'another-part', createValkeyKeyParam('Param3')],
+	SCOPE_FIRST_PART: ['micro-service', defineKeyParameter('ServiceID')],
+	key1: ['a-random-text-1', defineKeyParameter('Param1')],
+	key2: ['another-text', defineKeyParameter('Param2'), 'another-part', defineKeyParameter('Param3')],
 } as const;
 ```
 
-#### createValkeyKeysMap
+#### createKeysMapping
 
 ```typescript
-createValkeyKeysMap(
+createKeysMapping(
   valkeyKeysConfig: Record<string, any>,
   optionalDelimiter: string | null
 )
@@ -388,7 +388,7 @@ If you don't want to use a delimiter, give an empty string (`''`) to `optionalDe
 
 > For most cases (like 95% of them), you will use a delimiter. Therefore I chose the most commonly used one (colon `:`), which is also used in official Valkey tutorials, as the default delimiter.
 
-> `valkeyKeysConfig` should be given as the example below. Otherwise you won't get suggestions on `createValkeyKey()` and also Typescript will give an error when you try to provide parameter values.
+> `valkeyKeysConfig` should be given as the example below. Otherwise you won't get suggestions on `generateKey()` and also Typescript will give an error when you try to provide parameter values.
 
 > `readonly ValkeyKeysConfig` does not work. Only way is to write `as const` at the end of the config object.
 
@@ -398,11 +398,11 @@ Given the config following config:
 // a Valkey Keys Config
 const exampleValkeyKeysConfig = {
 	SCOPE_FIRST_PART: [],
-	key1: ['a-random-text-1', createValkeyKeyParam('Param1')],
-	key2: ['another-text', createValkeyKeyParam('Param2')],
+	key1: ['a-random-text-1', defineKeyParameter('Param1')],
+	key2: ['another-text', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', createValkeyKeyParam('Param3')],
-		scopedKey1: ['a-key-1', createValkeyKeyParam('KeyParam')],
+		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
+		scopedKey1: ['a-key-1', defineKeyParameter('KeyParam')],
 	},
 } as const;
 ```
@@ -410,7 +410,7 @@ const exampleValkeyKeysConfig = {
 And called as follows:
 
 ```typescript
-const exampleValkeyKeysTemplateMap = createValkeyKeysMap(exampleValkeyKeysConfig);
+const exampleValkeyKeysTemplateMap = createKeysMapping(exampleValkeyKeysConfig);
 ```
 
 It will produce this object which is a `Valkey Keys Template Map`:
@@ -425,10 +425,10 @@ It will produce this object which is a `Valkey Keys Template Map`:
 }
 ```
 
-#### createValkeyKey
+#### generateKey
 
 ```typescript
-createValkeyKey(
+generateKey(
   valkeyKeyTemplateString: string,
   params: Record<string, string>
 ): string
@@ -437,7 +437,7 @@ createValkeyKey(
 Creates a Valkey key using a `Valkey Key Template` and replacing parameters on template with given parameter values.
 
 ```typescript
-const blogPostCommentRepliesRK = createValkeyKey('posts:%PostID%:comments:%CommentID%:replies', {
+const blogPostCommentRepliesRK = generateKey('posts:%PostID%:comments:%CommentID%:replies', {
 	PostID: '1234',
 	CommentID: '9876',
 });

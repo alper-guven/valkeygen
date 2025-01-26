@@ -103,7 +103,7 @@ const createTemplateScope = (
 	return scopeTemplate;
 };
 
-export const createValkeyKeysMap = <
+export const createKeysMapping = <
 	const T extends ValkeygenConfig,
 	Delimiter extends string = ':',
 	K = IsValidValkeygenConfig2<T> extends true ? 'valid' : 'invalid',

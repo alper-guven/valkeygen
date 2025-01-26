@@ -28,7 +28,7 @@ const findParamNamesInTemplateString = (templateString: string): string[] => {
 
 // Create a template string from a template array
 
-export function createValkeyKey<T extends string>(
+export function generateKey<T extends string>(
 	valkeyKeyTemplateString: T,
 	params: getRequiredParamsFromTemplateString<T>
 ): string {
