@@ -51,7 +51,10 @@ const createTemplateLeaf = (
 	);
 
 	if (parentTemplateString != null && parentTemplateString.length > 0) {
-		return [parentTemplateString, templateString].join(delimiter);
+		if (templateString) {
+			return [parentTemplateString, templateString].join(delimiter);
+		}
+		return parentTemplateString;
 	}
 
 	return templateString;
@@ -77,9 +80,13 @@ const createTemplateScope = (
 		let templateString: string | null = null;
 
 		if (parentTemplateString != null && parentTemplateString.length > 0) {
-			templateString = [parentTemplateString, scopeFirstPartString].join(
-				delimiter
-			);
+			if (scopeFirstPartString) {
+				templateString = [parentTemplateString, scopeFirstPartString].join(
+					delimiter
+				);
+			} else {
+				templateString = parentTemplateString;
+			}
 		} else {
 			templateString = scopeFirstPartString;
 		}

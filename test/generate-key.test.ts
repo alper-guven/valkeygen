@@ -3,8 +3,17 @@ import { describe, it } from 'mocha';
 import { generateKey } from '../src/index.js';
 
 describe('Generate Key', function () {
-	it('should return empty string', function () {
-		assert.equal(generateKey('', null), '');
+	it('should throw if null', function () {
+		// @ts-expect-error : we are testing the error case
+		expect(() => generateKey(null, null)).to.throw(
+			'Template string can not be empty'
+		);
+	});
+
+	it('should throw if empty string', function () {
+		expect(() => generateKey('', null)).to.throw(
+			'Template string can not be empty'
+		);
 	});
 
 	it('should return test', function () {
@@ -26,7 +35,7 @@ describe('Generate Key', function () {
 				KeyID: '',
 			})
 		).to.throw(
-			'Valkey Key Template String has param named <KeyID>, but given value <> is invalid.'
+			'Valkey Key Template String has param named <KeyID>, but given value <> is empty.'
 		);
 	});
 });

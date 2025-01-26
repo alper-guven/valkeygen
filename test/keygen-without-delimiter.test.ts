@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import { describe, it } from 'mocha';
 import {
 	generateKey,
@@ -14,9 +14,14 @@ describe('Create Valkey Key Without Delimiter', function () {
 
 		restaurants: {
 			SCOPE_PREFIX: ['RESTAURANTS'],
+
+			all: [],
+
 			byCategory: ['by-category', defineKeyParameter('CategoryID')],
 			byCity: [defineKeyParameter('CityID')],
 		},
+
+		none: [],
 
 		categories: {
 			SCOPE_PREFIX: ['categories'],
@@ -88,5 +93,20 @@ describe('Create Valkey Key Without Delimiter', function () {
 			}),
 			'orders:of-user:'
 		);
+	});
+
+	describe('Empty leaf keys', function () {
+		it('should return key for all restaurants', function () {
+			assert.equal(
+				generateKey(valkeyKeysMap.restaurants.all, null),
+				'RESTAURANTS'
+			);
+		});
+
+		it('should throw if empty string', function () {
+			expect(() => generateKey('', null)).to.throw(
+				'Template string can not be empty'
+			);
+		});
 	});
 });

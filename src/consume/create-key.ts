@@ -32,6 +32,11 @@ export function generateKey<T extends string>(
 	valkeyKeyTemplateString: T,
 	params: getRequiredParamsFromTemplateString<T>
 ): string {
+	// Check if valkeyKeyTemplateString is empty or undefined
+	if (valkeyKeyTemplateString == null || valkeyKeyTemplateString === '') {
+		throw new Error('Template string can not be empty');
+	}
+
 	let newString = String(valkeyKeyTemplateString).toString();
 
 	// Check if template string is empty
@@ -63,6 +68,12 @@ export function generateKey<T extends string>(
 		if (paramValue == null) {
 			throw new Error(
 				`Valkey Key Template String has param named <${paramName}>, but no value provided it.`
+			);
+		}
+
+		if (paramValue === '') {
+			throw new Error(
+				`Valkey Key Template String has param named <${paramName}>, but given value <${paramValue}> is empty.`
 			);
 		}
 
