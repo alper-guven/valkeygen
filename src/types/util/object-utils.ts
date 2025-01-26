@@ -16,20 +16,22 @@ type Path_GetLastPart<T extends string> =
 		: T;
 
 // typescript type that joins string array into a string with a separator between each element
-export type JoinStringArray<ArrayToJoin extends readonly string[]> =
-	ArrayToJoin extends readonly []
-		? ''
-		: ArrayToJoin extends readonly string[]
-		? ArrayToJoin extends readonly [infer First, ...infer Rest]
-			? First extends string
-				? Rest extends readonly []
-					? First
-					: Rest extends readonly string[]
-					? `${First}:${JoinStringArray<Rest>}`
-					: never
+export type JoinStringArray<
+	ArrayToJoin extends readonly string[],
+	Separator extends string
+> = ArrayToJoin extends readonly []
+	? ''
+	: ArrayToJoin extends readonly string[]
+	? ArrayToJoin extends readonly [infer First, ...infer Rest]
+		? First extends string
+			? Rest extends readonly []
+				? First
+				: Rest extends readonly string[]
+				? `${First}${Separator}${JoinStringArray<Rest, Separator>}`
 				: never
 			: never
-		: never;
+		: never
+	: never;
 
 export type DeepMutable<T> = {
 	-readonly [k in keyof T]: DeepMutable<T[k]>;

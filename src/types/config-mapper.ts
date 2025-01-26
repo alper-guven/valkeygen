@@ -47,10 +47,11 @@ export type ValkeyKeyTemplateString_FromPath__Main<
 	Path extends string,
 	Delimiter extends string
 > = KeyRegistry['SCOPE_PREFIX'] extends readonly any[]
-	? `${JoinStringArray<KeyRegistry['SCOPE_PREFIX']> extends ''
+	? `${JoinStringArray<KeyRegistry['SCOPE_PREFIX'], Delimiter> extends ''
 			? ''
 			: `${JoinStringArray<
-					KeyRegistry['SCOPE_PREFIX']
+					KeyRegistry['SCOPE_PREFIX'],
+					Delimiter
 			  >}${Delimiter}`}${ValkeyKeyTemplateString_FromPath__FromScope<
 			KeyRegistry,
 			Path,
@@ -78,7 +79,8 @@ export type ValkeyKeyTemplateString_FromPath__FromScope<
 				Delimiter
 		  >
 		: `${Join_ValkeyKeyTemplateArray<
-				KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX']
+				KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX'],
+				Delimiter
 		  >}${ValkeyKeyTemplateString_FromPath__FromScope<
 				KeyRegistry[Path_GetFirstPart<Path>],
 				Path_GetRest<Path>,
@@ -93,7 +95,10 @@ export type ValkeyKeyTemplateString_FromPath__FromScope<
 	: PathFirst_ObjType extends 'leaf'
 	? KeyRegistry[Path_GetFirstPart<Path>] extends readonly []
 		? ''
-		: `${Join_ValkeyKeyTemplateArray<KeyRegistry[Path_GetFirstPart<Path>]>}`
+		: `${Join_ValkeyKeyTemplateArray<
+				KeyRegistry[Path_GetFirstPart<Path>],
+				Delimiter
+		  >}`
 	: never;
 
 /**
@@ -101,8 +106,9 @@ export type ValkeyKeyTemplateString_FromPath__FromScope<
  * * This is used to create a Valkey Key Template String.
  */
 export type Join_ValkeyKeyTemplateArray<
-	arr extends readonly ValkeygenConfigTemplateArrayElements[]
-> = `${JoinStringArray<ValkeyKeyTemplateArray_ToStringArray<arr>>}`;
+	arr extends readonly ValkeygenConfigTemplateArrayElements[],
+	Delimiter extends string
+> = `${JoinStringArray<ValkeyKeyTemplateArray_ToStringArray<arr>, Delimiter>}`;
 
 // * Converts a Valkey Key Template Array (Array<string | ValkeyKeyParam>) to a string array.
 export type ValkeyKeyTemplateArray_ToStringArray<
