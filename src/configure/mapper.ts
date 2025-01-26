@@ -105,7 +105,7 @@ const createTemplateScope = (
 
 export const createKeysMapping = <
 	const T extends ValkeygenConfig,
-	Delimiter extends string = ':',
+	const Delimiter extends string = ':',
 	K = IsValidValkeygenConfig2<T> extends true ? 'valid' : 'invalid',
 	ReturnValue = 'valid' extends K
 		? IsReadonlyConfig<T> extends 'yes'

@@ -55,6 +55,7 @@ const BlogKeys = createKeysMapping({
 	SCOPE_PREFIX: ['blog'],
 	posts: {
 		SCOPE_PREFIX: ['posts'],
+		all: [],
 		byId: [defineKeyParameter('PostID')],
 		comments: {
 			SCOPE_PREFIX: [defineKeyParameter('PostID'), 'comments'],
@@ -62,6 +63,9 @@ const BlogKeys = createKeysMapping({
 		},
 	},
 });
+
+// All posts
+const allPostsKey = generateKey(BlogKeys.posts.all);
 
 // Generate keys using the mapping
 const postKey = generateKey(BlogKeys.posts.byId, {

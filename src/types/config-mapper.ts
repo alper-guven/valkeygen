@@ -47,7 +47,12 @@ export type ValkeyKeyTemplateString_FromPath__Main<
 			? ''
 			: `${JoinStringArray<
 					KeyRegistry['SCOPE_PREFIX']
-			  >}:`}${ValkeyKeyTemplateString_FromPath__FromScope<KeyRegistry, Path>}`
+			  >}:`}${ValkeyKeyTemplateString_FromPath__FromScope<
+			KeyRegistry,
+			Path
+	  > extends ''
+			? ''
+			: ValkeyKeyTemplateString_FromPath__FromScope<KeyRegistry, Path>}`
 	: never;
 
 // * Create a template string by taking a Config Scope object and a path.
@@ -56,14 +61,26 @@ export type ValkeyKeyTemplateString_FromPath__FromScope<
 	Path extends string,
 	PathFirst_ObjType = TypeOfPathObject<KeyRegistry, Path_GetFirstPart<Path>>
 > = PathFirst_ObjType extends 'scope'
-	? `${Join_ValkeyKeyTemplateArray<
-			KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX']
-	  >}:${ValkeyKeyTemplateString_FromPath__FromScope<
-			KeyRegistry[Path_GetFirstPart<Path>],
-			Path_GetRest<Path>
-	  >}`
+	? KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX'] extends readonly []
+		? ValkeyKeyTemplateString_FromPath__FromScope<
+				KeyRegistry[Path_GetFirstPart<Path>],
+				Path_GetRest<Path>
+		  >
+		: `${Join_ValkeyKeyTemplateArray<
+				KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX']
+		  >}${ValkeyKeyTemplateString_FromPath__FromScope<
+				KeyRegistry[Path_GetFirstPart<Path>],
+				Path_GetRest<Path>
+		  > extends ''
+				? ''
+				: `:${ValkeyKeyTemplateString_FromPath__FromScope<
+						KeyRegistry[Path_GetFirstPart<Path>],
+						Path_GetRest<Path>
+				  >}`}`
 	: PathFirst_ObjType extends 'leaf'
-	? `${Join_ValkeyKeyTemplateArray<KeyRegistry[Path_GetFirstPart<Path>]>}`
+	? KeyRegistry[Path_GetFirstPart<Path>] extends readonly []
+		? ''
+		: `${Join_ValkeyKeyTemplateArray<KeyRegistry[Path_GetFirstPart<Path>]>}`
 	: never;
 
 /**
@@ -77,7 +94,9 @@ export type Join_ValkeyKeyTemplateArray<
 // * Converts a Valkey Key Template Array (Array<string | ValkeyKeyParam>) to a string array.
 export type ValkeyKeyTemplateArray_ToStringArray<
 	T extends readonly ValkeygenConfigTemplateArrayElements[]
-> = T extends any
+> = T extends readonly []
+	? readonly []
+	: T extends any
 	? TailOfArray<T> extends []
 		? [makeString_StringOrValkeyKeyParam<T[0]>]
 		: readonly [
