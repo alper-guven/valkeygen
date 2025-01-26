@@ -1,10 +1,10 @@
-# Create Valkey Key
+# ValkeyGen
 
 A Valkey key creation utility.
 
 Create `Valkey Key Templates`, which include parameters, using a nested config object & use your `Valkey Key Template` strings to create Valkey Keys.
 
-> This package heavily uses [Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) which is available since [TypeScript 4.1](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html) so you need at least this version of Typescript for this package to properly work.
+> This package uses [const Type Parameters](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#const-type-parameters) which is available since [TypeScript 5.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html) so you need at least this version of Typescript for types in this package to properly work.
 
 | ![npm](https://img.shields.io/npm/dm/valkeygen?style=for-the-badge) | [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://choosealicense.com/licenses/mit/) | [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/alperguven) |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |

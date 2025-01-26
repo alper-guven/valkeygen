@@ -104,7 +104,6 @@ const createTemplateScope = (
 };
 
 export const createValkeyKeysMap = <
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const T extends ValkeygenConfig,
 	Delimiter extends string = ':',
 	K = IsValidValkeygenConfig2<T> extends true ? 'valid' : 'invalid',
