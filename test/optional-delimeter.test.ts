@@ -8,12 +8,12 @@ describe('Use Valid Config to Create Key (With Optional Delimiter)', function ()
 	it('should return key for restaurants by category with given delimiter (.)', function () {
 		const valkeyKeysMap_WithCustomDelimiter = createKeysMapping(
 			{
-				SCOPE_FIRST_PART: [],
+				SCOPE_PREFIX: [],
 
 				appStatus: ['app-status'],
 
 				restaurants: {
-					SCOPE_FIRST_PART: ['RESTAURANTS'],
+					SCOPE_PREFIX: ['RESTAURANTS'],
 					byCategory: ['by-category', defineKeyParameter('CategoryID')],
 					byCity: [defineKeyParameter('CityID')],
 				},

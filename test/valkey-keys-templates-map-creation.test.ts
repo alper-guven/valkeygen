@@ -13,10 +13,10 @@ describe('Valkey Keys Templates Map Creation', function () {
 		expect(() =>
 			createKeysMapping(
 				{
-					SCOPE_FIRST_PART: [],
+					SCOPE_PREFIX: [],
 					appStatus: ['app-status'],
 					restaurants: {
-						SCOPE_FIRST_PART: ['RESTAURANTS'],
+						SCOPE_PREFIX: ['RESTAURANTS'],
 						byCategory: ['by-category', defineKeyParameter('CategoryID')],
 						byCity: [defineKeyParameter('CityID')],
 					},
@@ -30,10 +30,10 @@ describe('Valkey Keys Templates Map Creation', function () {
 		expect(() =>
 			createKeysMapping(
 				{
-					SCOPE_FIRST_PART: [],
+					SCOPE_PREFIX: [],
 					appStatus: ['app-status'],
 					restaurants: {
-						SCOPE_FIRST_PART: ['RESTAURANTS'],
+						SCOPE_PREFIX: ['RESTAURANTS'],
 						byCategory: ['by-category', defineKeyParameter('CategoryID')],
 						byCity: [defineKeyParameter('CityID')],
 					},
@@ -49,10 +49,10 @@ describe('Valkey Keys Templates Map Creation', function () {
 		expect(() =>
 			createKeysMapping(
 				{
-					SCOPE_FIRST_PART: [],
+					SCOPE_PREFIX: [],
 					appStatus: ['app-status'],
 					restaurants: {
-						SCOPE_FIRST_PART: ['RESTAURANTS'],
+						SCOPE_PREFIX: ['RESTAURANTS'],
 						byCategory: ['by-category', defineKeyParameter('CategoryID')],
 						byCity: [defineKeyParameter('CityID')],
 					},
@@ -65,7 +65,7 @@ describe('Valkey Keys Templates Map Creation', function () {
 
 	it('should throw error when given an invalid config (invalid prop)', function () {
 		const randomObject = {
-			SCOPE_FIRST_PART: [],
+			SCOPE_PREFIX: [],
 			asddasd: 'asdasd',
 			asdasd: 'asdasd',
 			asdasd123123: 1,
@@ -77,7 +77,7 @@ describe('Valkey Keys Templates Map Creation', function () {
 		}).to.throw('Valkey Key Config is not valid');
 	});
 
-	it('should throw error when given an invalid config (no SCOPE_FIRST_PART)', function () {
+	it('should throw error when given an invalid config (no SCOPE_PREFIX)', function () {
 		const randomObject = {
 			key1: ['key1'],
 			key2: ['key2'],
@@ -91,9 +91,9 @@ describe('Valkey Keys Templates Map Creation', function () {
 		);
 	});
 
-	it('should throw error when given an invalid config (invalid SCOPE_FIRST_PART)', function () {
+	it('should throw error when given an invalid config (invalid SCOPE_PREFIX)', function () {
 		const randomObject = {
-			SCOPE_FIRST_PART: 1,
+			SCOPE_PREFIX: 1,
 			key1: ['key1'],
 			key2: ['key2'],
 		};

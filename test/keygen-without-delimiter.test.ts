@@ -8,43 +8,43 @@ import {
 
 describe('Create Valkey Key Without Delimiter', function () {
 	const valkeyKeysMap = createKeysMapping({
-		SCOPE_FIRST_PART: [],
+		SCOPE_PREFIX: [],
 
 		appStatus: ['app-status'],
 
 		restaurants: {
-			SCOPE_FIRST_PART: ['RESTAURANTS'],
+			SCOPE_PREFIX: ['RESTAURANTS'],
 			byCategory: ['by-category', defineKeyParameter('CategoryID')],
 			byCity: [defineKeyParameter('CityID')],
 		},
 
 		categories: {
-			SCOPE_FIRST_PART: ['categories'],
+			SCOPE_PREFIX: ['categories'],
 			byID: [defineKeyParameter('CategoryID')],
 		},
 
 		users: {
-			SCOPE_FIRST_PART: ['users'],
+			SCOPE_PREFIX: ['users'],
 			online: ['online'],
 			withActiveOrder: ['with-active-order'],
 			byID: ['by-id', defineKeyParameter('UserID')],
 		},
 
 		couriers: {
-			SCOPE_FIRST_PART: ['couriers'],
+			SCOPE_PREFIX: ['couriers'],
 			Online: ['online'],
 			OnDelivery: ['on-delivery'],
 			byID: {
-				SCOPE_FIRST_PART: ['by-id', defineKeyParameter('CourierID')],
+				SCOPE_PREFIX: ['by-id', defineKeyParameter('CourierID')],
 				PreviousDeliveries: ['previous-deliveries'],
 			},
 		},
 
 		orders: {
-			SCOPE_FIRST_PART: ['orders'],
+			SCOPE_PREFIX: ['orders'],
 			byUser: ['of-user', defineKeyParameter('UserID')],
 			byCity: {
-				SCOPE_FIRST_PART: ['by-city', defineKeyParameter('CityName')],
+				SCOPE_PREFIX: ['by-city', defineKeyParameter('CityName')],
 				byCourier: ['of-courier', defineKeyParameter('CourierID')],
 			},
 		},

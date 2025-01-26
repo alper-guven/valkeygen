@@ -16,7 +16,7 @@ export type ValkeygenConfigTemplateArray = Array<string | ValkeygenConfigParam>;
 // * Valkey Key Config
 
 export type ValkeygenConfigScope = {
-	SCOPE_FIRST_PART: ValkeygenConfigTemplateArray;
+	SCOPE_PREFIX: ValkeygenConfigTemplateArray;
 	[key: string]: ScopeOrKeyTemplate;
 };
 
@@ -38,8 +38,8 @@ export type IsValidValkeygenConfig2<T> = DeepMutable<T> extends ValkeygenConfig
 	? true
 	: false;
 
-export type IsReadonlyConfig<T> = 'SCOPE_FIRST_PART' extends keyof T
-	? T['SCOPE_FIRST_PART'] extends any[]
+export type IsReadonlyConfig<T> = 'SCOPE_PREFIX' extends keyof T
+	? T['SCOPE_PREFIX'] extends any[]
 		? 'no'
 		: 'yes'
 	: 'no';

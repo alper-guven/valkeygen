@@ -52,12 +52,12 @@ Let's look at a simple example that demonstrates creating a blog-related key map
 ```typescript
 // Create the keys mapping
 const BlogKeys = createKeysMapping({
-	SCOPE_FIRST_PART: ['blog'],
+	SCOPE_PREFIX: ['blog'],
 	posts: {
-		SCOPE_FIRST_PART: ['posts'],
+		SCOPE_PREFIX: ['posts'],
 		byId: [defineKeyParameter('PostID')],
 		comments: {
-			SCOPE_FIRST_PART: [defineKeyParameter('PostID'), 'comments'],
+			SCOPE_PREFIX: [defineKeyParameter('PostID'), 'comments'],
 			byId: [defineKeyParameter('CommentID')],
 		},
 	},
@@ -112,43 +112,43 @@ Create a `Valkey Keys Config` object.
 
 ```typescript
 const valkeyKeysConfig = {
-	SCOPE_FIRST_PART: [],
+	SCOPE_PREFIX: [],
 
 	appStatus: ['app-status'],
 
 	restaurants: {
-		SCOPE_FIRST_PART: ['RESTAURANTS'],
+		SCOPE_PREFIX: ['RESTAURANTS'],
 		byCategory: ['by-category', defineKeyParameter('CategoryID')],
 		byCity: [defineKeyParameter('CityID')],
 	},
 
 	categories: {
-		SCOPE_FIRST_PART: ['categories'],
+		SCOPE_PREFIX: ['categories'],
 		byID: [defineKeyParameter('CategoryID')],
 	},
 
 	users: {
-		SCOPE_FIRST_PART: ['users'],
+		SCOPE_PREFIX: ['users'],
 		online: ['online'],
 		withActiveOrder: ['with-active-order'],
 		byID: ['by-id', defineKeyParameter('UserID')],
 	},
 
 	couriers: {
-		SCOPE_FIRST_PART: ['couriers'],
+		SCOPE_PREFIX: ['couriers'],
 		Online: ['online'],
 		OnDelivery: ['on-delivery'],
 		byID: {
-			SCOPE_FIRST_PART: ['by-id', defineKeyParameter('CourierID')],
+			SCOPE_PREFIX: ['by-id', defineKeyParameter('CourierID')],
 			PreviousDeliveries: ['previous-deliveries'],
 		},
 	},
 
 	orders: {
-		SCOPE_FIRST_PART: ['orders'],
+		SCOPE_PREFIX: ['orders'],
 		byUser: ['of-user', defineKeyParameter('UserID')],
 		byCity: {
-			SCOPE_FIRST_PART: ['by-city', defineKeyParameter('CityName')],
+			SCOPE_PREFIX: ['by-city', defineKeyParameter('CityName')],
 			byCourier: ['of-courier', defineKeyParameter('CourierID')],
 		},
 	},
@@ -295,17 +295,17 @@ const exampleTemplateArray = ['key1', defineKeyParameter('Param1')];
 
 Main building block of the a `Valkey Keys Config`.
 
-- It has to have a key named `SCOPE_FIRST_PART` which is a `Valkey Keys Config Template Array`
+- It has to have a key named `SCOPE_PREFIX` which is a `Valkey Keys Config Template Array`
 - Other keys can be either a `Valkey Keys Config Template Array` or a `Valkey Keys Config Scope`
 
 ```typescript
 const exampleScope = {
-	SCOPE_FIRST_PART: [],
+	SCOPE_PREFIX: [],
 	key0: ['key0'],
 	key1: ['key1', defineKeyParameter('Param1')],
 	key2: ['key2', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
+		SCOPE_PREFIX: ['a-nested-scope', defineKeyParameter('Param3')],
 		scopedKey1: ['a-key-1'],
 		scopedKey2: ['a-key-2', defineKeyParameter('KeyParam')],
 	},
@@ -320,11 +320,11 @@ A config object to create `Valkey Keys Template Map`
 
 ```typescript
 const exampleValkeyKeysConfig = {
-	SCOPE_FIRST_PART: [],
+	SCOPE_PREFIX: [],
 	key1: ['a-random-text-1', defineKeyParameter('Param1')],
 	key2: ['another-text', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
+		SCOPE_PREFIX: ['a-nested-scope', defineKeyParameter('Param3')],
 		scopedKey1: ['a-key-1', defineKeyParameter('KeyParam')],
 	},
 } as const;
@@ -338,11 +338,11 @@ Given the following config to `createKeysMapping()` function:
 
 ```typescript
 const exampleValkeyKeysConfig = {
-	SCOPE_FIRST_PART: [],
+	SCOPE_PREFIX: [],
 	key1: ['a-random-text-1', defineKeyParameter('Param1')],
 	key2: ['another-text', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
+		SCOPE_PREFIX: ['a-nested-scope', defineKeyParameter('Param3')],
 		scopedKey1: ['a-key-1', defineKeyParameter('KeyParam')],
 	},
 } as const;
@@ -380,7 +380,7 @@ It can be used in a `Valkey Keys Config Template Array` when creating `Valkey Ke
 
 ```typescript
 const exampleValkeyKeysConfig = {
-	SCOPE_FIRST_PART: ['micro-service', defineKeyParameter('ServiceID')],
+	SCOPE_PREFIX: ['micro-service', defineKeyParameter('ServiceID')],
 	key1: ['a-random-text-1', defineKeyParameter('Param1')],
 	key2: ['another-text', defineKeyParameter('Param2'), 'another-part', defineKeyParameter('Param3')],
 } as const;
@@ -412,11 +412,11 @@ Given the config following config:
 ```typescript
 // a Valkey Keys Config
 const exampleValkeyKeysConfig = {
-	SCOPE_FIRST_PART: [],
+	SCOPE_PREFIX: [],
 	key1: ['a-random-text-1', defineKeyParameter('Param1')],
 	key2: ['another-text', defineKeyParameter('Param2')],
 	aNestedScope: {
-		SCOPE_FIRST_PART: ['a-nested-scope', defineKeyParameter('Param3')],
+		SCOPE_PREFIX: ['a-nested-scope', defineKeyParameter('Param3')],
 		scopedKey1: ['a-key-1', defineKeyParameter('KeyParam')],
 	},
 } as const;

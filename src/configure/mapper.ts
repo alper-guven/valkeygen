@@ -65,12 +65,12 @@ const createTemplateScope = (
 	const scopeTemplate: ValkeyKeyTemplatesMapScope = {};
 
 	const scopeFirstPartString = createTemplateStringFormTemplateArray(
-		scope.SCOPE_FIRST_PART,
+		scope.SCOPE_PREFIX,
 		delimiter
 	);
 
 	for (const [key, value] of Object.entries(scope)) {
-		if (key === 'SCOPE_FIRST_PART') {
+		if (key === 'SCOPE_PREFIX') {
 			continue;
 		}
 

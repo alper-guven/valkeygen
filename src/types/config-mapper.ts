@@ -21,10 +21,10 @@ export type ScopeToKeys<
 	T extends Record<string, any>,
 	X extends Record<string, any> = T,
 	AggregatedPath extends string = ''
-> = 'SCOPE_FIRST_PART' extends keyof T
+> = 'SCOPE_PREFIX' extends keyof T
 	? {
-			[K in Exclude<keyof T, 'SCOPE_FIRST_PART'>]: K extends string
-				? 'SCOPE_FIRST_PART' extends keyof T[K]
+			[K in Exclude<keyof T, 'SCOPE_PREFIX'>]: K extends string
+				? 'SCOPE_PREFIX' extends keyof T[K]
 					? ScopeToKeys<
 							T[K],
 							X,
@@ -42,11 +42,11 @@ export type ScopeToKeys<
 export type ValkeyKeyTemplateString_FromPath__Main<
 	KeyRegistry extends Record<string, any>,
 	Path extends string
-> = KeyRegistry['SCOPE_FIRST_PART'] extends readonly any[]
-	? `${JoinStringArray<KeyRegistry['SCOPE_FIRST_PART']> extends ''
+> = KeyRegistry['SCOPE_PREFIX'] extends readonly any[]
+	? `${JoinStringArray<KeyRegistry['SCOPE_PREFIX']> extends ''
 			? ''
 			: `${JoinStringArray<
-					KeyRegistry['SCOPE_FIRST_PART']
+					KeyRegistry['SCOPE_PREFIX']
 			  >}:`}${ValkeyKeyTemplateString_FromPath__FromScope<KeyRegistry, Path>}`
 	: never;
 
@@ -57,7 +57,7 @@ export type ValkeyKeyTemplateString_FromPath__FromScope<
 	PathFirst_ObjType = TypeOfPathObject<KeyRegistry, Path_GetFirstPart<Path>>
 > = PathFirst_ObjType extends 'scope'
 	? `${Join_ValkeyKeyTemplateArray<
-			KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_FIRST_PART']
+			KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX']
 	  >}:${ValkeyKeyTemplateString_FromPath__FromScope<
 			KeyRegistry[Path_GetFirstPart<Path>],
 			Path_GetRest<Path>
@@ -106,7 +106,7 @@ export type makeString_StringOrValkeyKeyParam<
 
 // * Determines if the object at the path is <scope | leaf | scope-first-part | undefined>
 export type TypeOfPathObject<obj, path extends string> = path extends keyof obj
-	? path extends 'SCOPE_FIRST_PART'
+	? path extends 'SCOPE_PREFIX'
 		? 'scope-first-part'
 		: obj[path] extends readonly ValkeygenConfigTemplateArrayElements[]
 		? 'leaf'

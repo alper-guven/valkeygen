@@ -6,10 +6,10 @@ describe('Valkey Configuration Validation', () => {
 	describe('Valid Configurations', () => {
 		it('should accept nested valid configuration with arrays', () => {
 			const validConfig = {
-				SCOPE_FIRST_PART: ['1111'],
+				SCOPE_PREFIX: ['1111'],
 				asdlasds: ['asdasd'],
 				scope: {
-					SCOPE_FIRST_PART: ['2222'],
+					SCOPE_PREFIX: ['2222'],
 					asdasd: ['asdasd'],
 				},
 			};
@@ -24,7 +24,7 @@ describe('Valkey Configuration Validation', () => {
 	describe('Invalid Configurations', () => {
 		it('should reject non-array values in configuration', () => {
 			const invalidConfig = {
-				SCOPE_FIRST_PART: ['1111'],
+				SCOPE_PREFIX: ['1111'],
 				qwelxqwe: 'qweqwe', // Invalid: string instead of array
 			};
 
@@ -34,7 +34,7 @@ describe('Valkey Configuration Validation', () => {
 			}).to.throw();
 		});
 
-		it('should reject configuration without SCOPE_FIRST_PART', () => {
+		it('should reject configuration without SCOPE_PREFIX', () => {
 			const invalidConfig = {
 				ajkdjkasjkd: 'asdasd',
 			};
@@ -47,9 +47,9 @@ describe('Valkey Configuration Validation', () => {
 
 		it('should reject configuration with invalid nested structure', () => {
 			const invalidNestedConfig = {
-				SCOPE_FIRST_PART: ['1111'],
+				SCOPE_PREFIX: ['1111'],
 				scope: {
-					// Missing SCOPE_FIRST_PART in nested scope
+					// Missing SCOPE_PREFIX in nested scope
 					asdasd: ['asdasd'],
 				},
 			};
@@ -64,7 +64,7 @@ describe('Valkey Configuration Validation', () => {
 	describe('Configuration Type Checking', () => {
 		it('should validate configuration immutability', () => {
 			const config = {
-				SCOPE_FIRST_PART: ['1111'] as const,
+				SCOPE_PREFIX: ['1111'] as const,
 				validKey: ['value'] as const,
 			} as const;
 
