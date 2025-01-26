@@ -1,6 +1,6 @@
 {
   "name": "valkeygen",
-  "version": "1.0.1",
+  "version": "0.1.0",
   "description": "",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -29,13 +29,14 @@
     "type": "git",
     "url": "git+https://github.com/alper-guven/valkeygen.git"
   },
-  "author": "Alper Güven <alper.guven.11@gmail.com> (https://alper.codes/)",
+  "author": "Alper Güven <alper.guven.11@gmail.com> (https://www.linkedin.com/in/alperguven/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alper-guven/valkeygen/issues"
   },
   "keywords": [
     "valkey",
+    "valkeygen",
     "valkey key",
     "valkey key generator",
     "valkey key creator",
