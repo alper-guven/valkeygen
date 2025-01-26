@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createValkeyKey = createValkeyKey;
+exports.generateKey = generateKey;
 const validators_js_1 = require("./validators.js");
 const findParamNamesInTemplateString = (templateString) => {
     const paramNames = [];
@@ -21,7 +21,11 @@ const findParamNamesInTemplateString = (templateString) => {
     return paramNames;
 };
 // Create a template string from a template array
-function createValkeyKey(valkeyKeyTemplateString, params) {
+function generateKey(valkeyKeyTemplateString, params) {
+    // Check if valkeyKeyTemplateString is empty or undefined
+    if (valkeyKeyTemplateString == null || valkeyKeyTemplateString === '') {
+        throw new Error('Template string can not be empty');
+    }
     let newString = String(valkeyKeyTemplateString).toString();
     // Check if template string is empty
     if (newString.length === 0) {
@@ -43,6 +47,9 @@ function createValkeyKey(valkeyKeyTemplateString, params) {
         const paramValue = params[paramName];
         if (paramValue == null) {
             throw new Error(`Valkey Key Template String has param named <${paramName}>, but no value provided it.`);
+        }
+        if (paramValue === '') {
+            throw new Error(`Valkey Key Template String has param named <${paramName}>, but given value <${paramValue}> is empty.`);
         }
         if ((0, validators_js_1.isParamValueValid)(paramValue) === false) {
             throw new Error(`Valkey Key Template String has param named <${paramName}>, but given value <${paramValue}> is invalid.`);

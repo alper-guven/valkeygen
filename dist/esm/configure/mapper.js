@@ -18,20 +18,28 @@ const createTemplateLeaf = (parentTemplateString, leafKeyTemplateArray, delimite
     validateValkeyKeyTemplate(leafKeyTemplateArray);
     const templateString = createTemplateStringFormTemplateArray(leafKeyTemplateArray, delimiter);
     if (parentTemplateString != null && parentTemplateString.length > 0) {
-        return [parentTemplateString, templateString].join(delimiter);
+        if (templateString) {
+            return [parentTemplateString, templateString].join(delimiter);
+        }
+        return parentTemplateString;
     }
     return templateString;
 };
 const createTemplateScope = (parentTemplateString, scope, delimiter) => {
     const scopeTemplate = {};
-    const scopeFirstPartString = createTemplateStringFormTemplateArray(scope.SCOPE_FIRST_PART, delimiter);
+    const scopeFirstPartString = createTemplateStringFormTemplateArray(scope.SCOPE_PREFIX, delimiter);
     for (const [key, value] of Object.entries(scope)) {
-        if (key === 'SCOPE_FIRST_PART') {
+        if (key === 'SCOPE_PREFIX') {
             continue;
         }
         let templateString = null;
         if (parentTemplateString != null && parentTemplateString.length > 0) {
-            templateString = [parentTemplateString, scopeFirstPartString].join(delimiter);
+            if (scopeFirstPartString) {
+                templateString = [parentTemplateString, scopeFirstPartString].join(delimiter);
+            }
+            else {
+                templateString = parentTemplateString;
+            }
         }
         else {
             templateString = scopeFirstPartString;
@@ -50,7 +58,7 @@ const createTemplateScope = (parentTemplateString, scope, delimiter) => {
     }
     return scopeTemplate;
 };
-export const createValkeyKeysMap = (valkeyKeysConfig, optionalDelimiter) => {
+export const createKeysMapping = (valkeyKeysConfig, optionalDelimiter) => {
     if (optionalDelimiter != null) {
         validateDelimiter(optionalDelimiter);
     }

@@ -1,4 +1,4 @@
-export const createValkeyKeyParam = (name) => {
+export const defineKeyParameter = (name) => {
     return {
         name,
     };

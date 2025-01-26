@@ -1,4 +1,4 @@
 export { ValkeygenConfigParam, ValkeygenConfigScope, ValkeygenConfigTemplateArray, ValkeygenConfig, } from './types/key-config.js';
-export { createValkeyKeysMap } from './configure/mapper.js';
-export { createValkeyKeyParam } from './configure/param.js';
-export { createValkeyKey } from './consume/create-key.js';
+export { createKeysMapping } from './configure/mapper.js';
+export { defineKeyParameter } from './configure/param.js';
+export { generateKey } from './consume/create-key.js';

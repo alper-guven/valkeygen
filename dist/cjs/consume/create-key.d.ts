@@ -1,2 +1,2 @@
 import { getRequiredParamsFromTemplateString } from '../types/consumers.js';
-export declare function createValkeyKey<T extends string>(valkeyKeyTemplateString: T, params: getRequiredParamsFromTemplateString<T>): string;
+export declare function generateKey<T extends string>(valkeyKeyTemplateString: T, params: getRequiredParamsFromTemplateString<T>): string;

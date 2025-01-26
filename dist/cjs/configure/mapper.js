@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createValkeyKeysMap = void 0;
+exports.createKeysMapping = void 0;
 const validators_js_1 = require("./validators.js");
 const createTemplateStringFormTemplateArray = (templateArray, delimiter) => {
     (0, validators_js_1.validateValkeyKeyTemplate)(templateArray);
@@ -21,20 +21,28 @@ const createTemplateLeaf = (parentTemplateString, leafKeyTemplateArray, delimite
     (0, validators_js_1.validateValkeyKeyTemplate)(leafKeyTemplateArray);
     const templateString = createTemplateStringFormTemplateArray(leafKeyTemplateArray, delimiter);
     if (parentTemplateString != null && parentTemplateString.length > 0) {
-        return [parentTemplateString, templateString].join(delimiter);
+        if (templateString) {
+            return [parentTemplateString, templateString].join(delimiter);
+        }
+        return parentTemplateString;
     }
     return templateString;
 };
 const createTemplateScope = (parentTemplateString, scope, delimiter) => {
     const scopeTemplate = {};
-    const scopeFirstPartString = createTemplateStringFormTemplateArray(scope.SCOPE_FIRST_PART, delimiter);
+    const scopeFirstPartString = createTemplateStringFormTemplateArray(scope.SCOPE_PREFIX, delimiter);
     for (const [key, value] of Object.entries(scope)) {
-        if (key === 'SCOPE_FIRST_PART') {
+        if (key === 'SCOPE_PREFIX') {
             continue;
         }
         let templateString = null;
         if (parentTemplateString != null && parentTemplateString.length > 0) {
-            templateString = [parentTemplateString, scopeFirstPartString].join(delimiter);
+            if (scopeFirstPartString) {
+                templateString = [parentTemplateString, scopeFirstPartString].join(delimiter);
+            }
+            else {
+                templateString = parentTemplateString;
+            }
         }
         else {
             templateString = scopeFirstPartString;
@@ -53,7 +61,7 @@ const createTemplateScope = (parentTemplateString, scope, delimiter) => {
     }
     return scopeTemplate;
 };
-const createValkeyKeysMap = (valkeyKeysConfig, optionalDelimiter) => {
+const createKeysMapping = (valkeyKeysConfig, optionalDelimiter) => {
     if (optionalDelimiter != null) {
         (0, validators_js_1.validateDelimiter)(optionalDelimiter);
     }
@@ -62,4 +70,4 @@ const createValkeyKeysMap = (valkeyKeysConfig, optionalDelimiter) => {
     const map = createTemplateScope(null, valkeyKeysConfig, delimiter);
     return map;
 };
-exports.createValkeyKeysMap = createValkeyKeysMap;
+exports.createKeysMapping = createKeysMapping;

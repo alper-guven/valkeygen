@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createValkeyKeyParam = void 0;
-const createValkeyKeyParam = (name) => {
+exports.defineKeyParameter = void 0;
+const defineKeyParameter = (name) => {
     return {
         name,
     };
 };
-exports.createValkeyKeyParam = createValkeyKeyParam;
+exports.defineKeyParameter = defineKeyParameter;

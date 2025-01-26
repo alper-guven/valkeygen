@@ -25,13 +25,13 @@ exports.validateValkeyKeyTemplate = validateValkeyKeyTemplate;
 const isScopeLike = (possibleScope) => {
     return (possibleScope != null &&
         typeof possibleScope === 'object' &&
-        Object.keys(possibleScope).includes('SCOPE_FIRST_PART'));
+        Object.keys(possibleScope).includes('SCOPE_PREFIX'));
 };
 exports.isScopeLike = isScopeLike;
 const isValidScope = (scope) => {
     if ((0, exports.isScopeLike)(scope)) {
         for (const [key, value] of Object.entries(scope)) {
-            if (key === 'SCOPE_FIRST_PART') {
+            if (key === 'SCOPE_PREFIX') {
                 if ((0, exports.isValkeyKeyTemplate)(value) === false) {
                     return false;
                 }
@@ -67,7 +67,7 @@ const validateScope = (scope, parentPath) => {
         if ((0, exports.isScopeLike)(scope)) {
             for (const [key, value] of Object.entries(scope)) {
                 const keyPath = parentPath ? `${parentPath}.${key}` : '';
-                if (key === 'SCOPE_FIRST_PART') {
+                if (key === 'SCOPE_PREFIX') {
                     (0, exports.validateValkeyKeyTemplate)(value);
                 }
                 else if (Array.isArray(value)) {

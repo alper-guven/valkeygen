@@ -18,7 +18,11 @@ const findParamNamesInTemplateString = (templateString) => {
     return paramNames;
 };
 // Create a template string from a template array
-export function createValkeyKey(valkeyKeyTemplateString, params) {
+export function generateKey(valkeyKeyTemplateString, params) {
+    // Check if valkeyKeyTemplateString is empty or undefined
+    if (valkeyKeyTemplateString == null || valkeyKeyTemplateString === '') {
+        throw new Error('Template string can not be empty');
+    }
     let newString = String(valkeyKeyTemplateString).toString();
     // Check if template string is empty
     if (newString.length === 0) {
@@ -40,6 +44,9 @@ export function createValkeyKey(valkeyKeyTemplateString, params) {
         const paramValue = params[paramName];
         if (paramValue == null) {
             throw new Error(`Valkey Key Template String has param named <${paramName}>, but no value provided it.`);
+        }
+        if (paramValue === '') {
+            throw new Error(`Valkey Key Template String has param named <${paramName}>, but given value <${paramValue}> is empty.`);
         }
         if (isParamValueValid(paramValue) === false) {
             throw new Error(`Valkey Key Template String has param named <${paramName}>, but given value <${paramValue}> is invalid.`);
