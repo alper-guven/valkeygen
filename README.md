@@ -47,21 +47,36 @@ Type definitions? Included!
 
 Eventual purpose of this library is to create a `Valkey Key` (which is basically a string) using a template which we call in this library a `Valkey Key Template`.
 
-There is a function called `generateKey()` which takes a `Valkey Key Template` and an object which includes values for the params in the `Valkey Key Template`, then replaces parameters in template with the given values.
-
-Most basic usage is as follows:
+Let's look at a simple example that demonstrates creating a blog-related key mapping. This example shows how to create keys for blog posts and their comments, illustrating the hierarchical nature of the key structure:
 
 ```typescript
-const blogPostRK = generateKey('posts:%PostID%', {
-	PostID: '1',
+// Create the keys mapping
+const BlogKeys = createKeysMapping({
+	SCOPE_FIRST_PART: ['blog'],
+	posts: {
+		SCOPE_FIRST_PART: ['posts'],
+		byId: [defineKeyParameter('PostID')],
+		comments: {
+			SCOPE_FIRST_PART: [defineKeyParameter('PostID'), 'comments'],
+			byId: [defineKeyParameter('CommentID')],
+		},
+	},
 });
-```
 
-This creates a `string` which equals to `posts:1`
+// Generate keys using the mapping
+const postKey = generateKey(BlogKeys.posts.byId, {
+	PostID: '1',
+}); // Result: "blog:posts:1"
+
+const commentKey = generateKey(BlogKeys.posts.comments.byId, {
+	PostID: '1',
+	CommentID: '123',
+}); // Result: "blog:posts:1:comments:123"
+```
 
 There are 3 ways you can use this library.
 
-- Create a `Valkey Key Templates Map` using `createKeysMapping()` to use it in conjunction with `generateKey()` to create Valkey keys.
+- Create a `Valkey Keys Config` object.
 - Create an object which has keys shaped as a `Valkey Key Template` and use it in conjunction with `generateKey()` to create Valkey keys.
 - Just use `generateKey()` function by writing your `Valkey Key Template` as parameter to create a Valkey key.
 
