@@ -15,9 +15,9 @@ import {
 	validateValkeyKeyConfig,
 } from './validators.js';
 
-const createTemplateStringFormTemplateArray = (
+const createTemplateStringFormTemplateArray = <const Delimiter extends string>(
 	templateArray: ValkeygenConfigTemplateArray,
-	delimiter: string
+	delimiter: Delimiter
 ): string | null => {
 	validateValkeyKeyTemplate(templateArray);
 
@@ -38,10 +38,10 @@ const createTemplateStringFormTemplateArray = (
 	return templateString;
 };
 
-const createTemplateLeaf = (
+const createTemplateLeaf = <const Delimiter extends string>(
 	parentTemplateString: string | null,
 	leafKeyTemplateArray: ValkeygenConfigTemplateArray,
-	delimiter: string
+	delimiter: Delimiter
 ): string | null => {
 	validateValkeyKeyTemplate(leafKeyTemplateArray);
 
@@ -60,10 +60,10 @@ const createTemplateLeaf = (
 	return templateString;
 };
 
-const createTemplateScope = (
+const createTemplateScope = <const Delimiter extends string>(
 	parentTemplateString: string | null,
 	scope: ValkeygenConfigScope,
-	delimiter: string
+	delimiter: Delimiter
 ): ValkeyKeyTemplatesMapScope => {
 	const scopeTemplate: ValkeyKeyTemplatesMapScope = {};
 
@@ -116,8 +116,8 @@ export const createKeysMapping = <
 	K = IsValidValkeygenConfig2<T> extends true ? 'valid' : 'invalid',
 	ReturnValue = 'valid' extends K
 		? IsReadonlyConfig<T> extends 'yes'
-			? ScopeToKeys<T>
-			: ScopeToKeys<T>
+			? ScopeToKeys<T, Delimiter>
+			: ScopeToKeys<T, Delimiter>
 		: never
 >(
 	valkeyKeysConfig: T,

@@ -19,6 +19,7 @@ import {
 // * Convert Valkey Keys Config (readonly) to Valkey Key Template Map
 export type ScopeToKeys<
 	T extends Record<string, any>,
+	Delimiter extends string,
 	X extends Record<string, any> = T,
 	AggregatedPath extends string = ''
 > = 'SCOPE_PREFIX' extends keyof T
@@ -27,12 +28,14 @@ export type ScopeToKeys<
 				? 'SCOPE_PREFIX' extends keyof T[K]
 					? ScopeToKeys<
 							T[K],
+							Delimiter,
 							X,
 							`${AggregatedPath extends '' ? '' : `${AggregatedPath}.`}${K}`
 					  >
 					: ValkeyKeyTemplateString_FromPath__Main<
 							X,
-							`${AggregatedPath extends '' ? '' : `${AggregatedPath}.`}${K}`
+							`${AggregatedPath extends '' ? '' : `${AggregatedPath}.`}${K}`,
+							Delimiter
 					  >
 				: never;
 	  }
@@ -41,41 +44,51 @@ export type ScopeToKeys<
 // * Create a template string by taking a Valkey Keys Config object and a path.
 export type ValkeyKeyTemplateString_FromPath__Main<
 	KeyRegistry extends Record<string, any>,
-	Path extends string
+	Path extends string,
+	Delimiter extends string
 > = KeyRegistry['SCOPE_PREFIX'] extends readonly any[]
 	? `${JoinStringArray<KeyRegistry['SCOPE_PREFIX']> extends ''
 			? ''
 			: `${JoinStringArray<
 					KeyRegistry['SCOPE_PREFIX']
-			  >}:`}${ValkeyKeyTemplateString_FromPath__FromScope<
+			  >}${Delimiter}`}${ValkeyKeyTemplateString_FromPath__FromScope<
 			KeyRegistry,
-			Path
+			Path,
+			Delimiter
 	  > extends ''
 			? ''
-			: ValkeyKeyTemplateString_FromPath__FromScope<KeyRegistry, Path>}`
+			: ValkeyKeyTemplateString_FromPath__FromScope<
+					KeyRegistry,
+					Path,
+					Delimiter
+			  >}`
 	: never;
 
 // * Create a template string by taking a Config Scope object and a path.
 export type ValkeyKeyTemplateString_FromPath__FromScope<
 	KeyRegistry extends Record<string, any>,
 	Path extends string,
+	Delimiter extends string,
 	PathFirst_ObjType = TypeOfPathObject<KeyRegistry, Path_GetFirstPart<Path>>
 > = PathFirst_ObjType extends 'scope'
 	? KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX'] extends readonly []
 		? ValkeyKeyTemplateString_FromPath__FromScope<
 				KeyRegistry[Path_GetFirstPart<Path>],
-				Path_GetRest<Path>
+				Path_GetRest<Path>,
+				Delimiter
 		  >
 		: `${Join_ValkeyKeyTemplateArray<
 				KeyRegistry[Path_GetFirstPart<Path>]['SCOPE_PREFIX']
 		  >}${ValkeyKeyTemplateString_FromPath__FromScope<
 				KeyRegistry[Path_GetFirstPart<Path>],
-				Path_GetRest<Path>
+				Path_GetRest<Path>,
+				Delimiter
 		  > extends ''
 				? ''
-				: `:${ValkeyKeyTemplateString_FromPath__FromScope<
+				: `${Delimiter}${ValkeyKeyTemplateString_FromPath__FromScope<
 						KeyRegistry[Path_GetFirstPart<Path>],
-						Path_GetRest<Path>
+						Path_GetRest<Path>,
+						Delimiter
 				  >}`}`
 	: PathFirst_ObjType extends 'leaf'
 	? KeyRegistry[Path_GetFirstPart<Path>] extends readonly []
