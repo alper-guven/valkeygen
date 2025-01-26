@@ -35,6 +35,8 @@ Check [How to Use](#usage) section to see explanations of usage options on examp
 
 Install [valkeygen](https://www.npmjs.com/package/valkeygen) with npm
 
+This package both supports **ESM** and **CommonJS**.
+
 ```bash
   npm install valkeygen
 ```
@@ -445,11 +447,7 @@ This creates a `string` which equals to `posts:1234:comments:9876:replies`
 
 ## FAQ
 
-#### When I give a config object to `createValkeyKeysMap()` it's output type is `never`. Why?
-
-When you give an invalid config object to it, it returns `never` as a result type. Since I need your config as a readonly object, I can't make the parameter type `ValkeyKeysConfig` directly. So I need to accept an object, check if it is valid & make the return type `never` in order to make you aware that there is something wrong.
-
-I now that it's a bad developer experience but I'm not sure if there is a way to solve this. Feel free to open an Issue to discuss this.
+No FAQ yet.
 
 ## Running Tests
 
@@ -466,7 +464,7 @@ This an NPM package.
 - When you make changes,
   - Build the project.
   - Create a new empty project.
-  - [Link the local build to your test project](https://docs.npmjs.com/cli/v8/commands/npm-link).
+  - [Link the local build to your test project](https://docs.npmjs.com/cli/v11/commands/npm-link).
   - Use your development version on your test project to see if it is working.
   - Write tests to verify that your new feature is working properly and also doesn't break anything.
 
